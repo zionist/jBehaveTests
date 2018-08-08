@@ -1,0 +1,78 @@
+Story: Community -> Members -> Overview page
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate Blog_ + UUID and put it to test param blogGeneratedTitle
+And I generate Opinion_ + UUID and put it to test param opinonGeneratedName
+And I generate Webcast_ + UUID and put it to test param webCastGeneratedName
+Given Set test param dateOfWebcast with value 05/09/2019
+
+Scenario:
+Create items webcast, opinion, blog
+Meta:
+@Name Cteate items: webcast, opinion, blog
+GivenStories:
+stories/iexpert/create_edit_delete_blog.story#{name:Create blog},
+stories/community/webcasts/cred_webcasts.story#{name:Create webcast},
+stories/mall/opinion/cred_opinion.story#{name:Create and sell opinion}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Members -> Overview page
+Meta:
+@Name Members -> Overview page
+Given I logged in with %{username} and %{password}
+When I click on Community menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Community')]
+When I click on Members  with link selector Members
+And I wait until service ready
+!-- find members "James Adv."
+When I type James Adv. into search field with css selector #community__members__search-input
+And I wait small timeout
+And I click on member name with css selector .member-card__header
+!-- products in MALL
+And I click on link More > with css selector a.btn:nth-child(3)
+When I wait until service ready
+Then I see title of page with css selector .social-title > h1:nth-child(1) contains: Products in MALL
+!-- And I see html code of list of mall items with css selector div.ng-scope:nth-child(3) contains %{opinonGeneratedName}
+When I click on menu item "Overview" with css selector #community__menu__overview-link
+When I wait until service ready
+!-- Clubs
+And I click on link More > with css selector div.row:nth-child(5) > div:nth-child(1) > a:nth-child(4)
+Then I see title of page with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Clubs
+When I click on menu item "Overview" with css selector #community__menu__overview-link
+When I wait until service ready
+!-- Webcasts TODO: no more button
+!-- And I click on link More > with css selector div.row:nth-child(5) > div:nth-child(1) > a:nth-child(4)
+!-- Then I see title of page with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) is Webcasts
+!-- When I click on menu item "Overview" with css selector #community__menu__overview-link
+!-- Blogs TODO: no more button
+!-- And I click on link More > with css selector div.row:nth-child(6) > div:nth-child(1) > a:nth-child(4)
+!-- Then I see title of page with css selector .social-title > h1:nth-child(1) is Blog
+!-- When I click on menu item "Overview" with css selector #community__menu__overview-link
+!-- Then I see html code of blog list with css selector div.row:nth-child(6) > div:nth-child(1) > div:nth-child(2) contains %{blogGeneratedTitle}
+!-- Q&A
+When I click on link More > with css selector a.btn:nth-child(7)
+!-- Then I see title of page with css selector .social-title > h1:nth-child(1) contains: Questions & Answers
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+
+Scenario:
+Delete items webcast, opinion, blog
+Meta:
+@Name Delete items: webcast, opinion, blog
+GivenStories:
+stories/iexpert/create_edit_delete_blog.story#{name:Delete blog},
+stories/community/webcasts/cred_webcasts.story#{name:Delete webcast}
+Given Do nothing

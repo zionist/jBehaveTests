@@ -1,0 +1,82 @@
+Story: Make sure that filters on "Add Potential Clients" page are working correctly.
+
+
+!-- Make clients (beginner and intermediate) visible to advisor. As advisor checks "open for business" filter
+!-- Beginner
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario:
+Check filters on "Add Potential Clients" page beginner
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+!-- Intermediate
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+Scenario:
+Check filters on "Add Potential Clients" page intermed
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+!-- Log in as advisor and go to "Add Potential Clients" page
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Check filters on "Add Potential Clients" page advisor
+Meta:
+@Name Check filters on "Add Potential Clients" page
+Given I logged in with %{username} and %{password}
+When I open CLIENTS menu
+And I wait until service ready
+!-- "Open for business" filter
+When I click on "Open for business" filter with xpath selector //span[contains(., 'Open for business')]
+Then I see Beginner with xpath selector //span[@class='table-ac__user ng-binding'][contains(., 'Quan Public')] contains: Quan Public
+And I see Intermediate with xpath selector //span[@class='table-ac__user ng-binding'][contains(., 'Mike In.')] contains: Mike In.
+!-- Search user by name
+When I type Quan Public into search field with xpath selector //input[@placeholder='Search by name...']
+And I wait small timeout
+Then I see Beginner with xpath selector //span[@class='table-ac__user ng-binding'] contains: Quan Public
+When I clear the user name with xpath selector //input[@placeholder='Search by name...']
+And I will refresh the page
+And I wait until service ready
+!-- Search user within N miles of ZIP code
+!-- When I type 5 into "Within" input field with css selector .col-xs-2 > input
+!-- And I wait small timeout
+!-- And I type 94089 into "miles of ZIP code" input field with css selector .col-xs-4 > input
+!-- And I wait small timeout
+!-- Then I see Intermediate with css selector tr.ng-scope > td:nth-child(2) > div:nth-child(1) contains: Mike In.
+
+!-- Make clients (beginner and intermediate) invisibe
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: Make client invisible for advisors for begginer
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+Scenario: Make client invisible for advisors for intermed
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing
+
+
+

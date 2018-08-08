@@ -1,0 +1,57 @@
+Story: A.I. Trend predictions in portolio
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+And I generate Personal + UUID and put it to test param portfolioGenerated
+
+Scenario: A.I. Trend predictions in portolio
+GivenStories:
+         stories/functional/test/portfolio/create_investement_portfolio.story#{name:Create investment porfolio}
+Given I connect card as client for %{username} with %{password}
+Given I logged in with %{username} and %{password}
+When Portfolio. I find portfolio %{portfolioGenerated}
+And I wait small timeout
+When I execute javascript scroll(1050, 700)
+When I click on Analyze with css selector span.cx-portfolios-action-menu-group__title:nth-child(1)
+And I click on more with css selector div.cx-portfolios-action-menu-group:nth-child(3) > div:nth-child(8) > span:nth-child(1) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1) > span:nth-child(1) > span:nth-child(1)
+And I click on A.I. Trend predictions with css selector div.cx-portfolios-action-menu-group:nth-child(2) > span:nth-child(1) > span:nth-child(1) > li:nth-child(1) > a:nth-child(1) > span:nth-child(1)
+Then I see Subscribe with css selector h4.modal-title:nth-child(1) contains: Subscribe
+When I click on Subscribe button with css selector button.ng-binding:nth-child(2)
+And I wait until service ready
+Then I see header with css selector .cx-patterns-overview__text > h1:nth-child(1) contains: A.I. Trend Predictions:
+When I click on Subscribe button with css selector button.btn:nth-child(6)
+And I wait small timeout
+When I execute javascript scroll(1050, 350)
+And I wait until service ready
+When I click on Analyze with css selector .cx-portfolio-menu > div:nth-child(3) > ul:nth-child(1) > div:nth-child(6) > span:nth-child(1)
+And I click on  A.I. Trend predictions with css selector div.cx-portfolios-action-menu-group:nth-child(3) > span:nth-child(6) > span:nth-child(1) > li:nth-child(1) > a:nth-child(1) > span:nth-child(1)
+And I wait until service ready
+And I wait small timeout
+When I execute javascript scroll(1050, 350)
+Then I see Analyze A.I. Trend Predictions with css selector div.col-xs-10 contains: Analyze A.I. Trend Predictions
+
+!-- Then I see Apple Inc. with css selector tr.ng-scope:nth-child(1) > td:nth-child(2) > div:nth-child(2) contains: Apple Inc.
+When I click on Bullish weekly with css selector div.col-xs-3:nth-child(1) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Bullish weekly with css selector div.col-xs-3:nth-child(1) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Bullish monthly with css selector div.col-xs-3:nth-child(2) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Bullish monthly with css selector div.col-xs-3:nth-child(2) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Bearish weekly with css selector div.jumbotron:nth-child(1) > div:nth-child(3) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Bearish weekly with css selector div.jumbotron:nth-child(1) > div:nth-child(3) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Bearish monthly with css selector div.col-xs-3:nth-child(4) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Bearish monthly with css selector div.col-xs-3:nth-child(4) > label:nth-child(1) > span:nth-child(2)
+And I wait small timeout
+When I click on Done button with css selector .btn-join
+And I wait until service ready
+Then I see Summary header with css selector .col-sm-9 > h1:nth-child(1) contains: Summary
+And I wait small timeout
+When I remove portfolio
+

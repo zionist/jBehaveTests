@@ -1,0 +1,47 @@
+Story: Current Advisor page
+
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario:
+Current Advisor page
+Meta:
+@name Current Advisor page
+!-- Open Advisor/Client menu
+Given I logged in with %{username} and %{password}
+When I open ADVISORS menu
+And I click on current advisor page with css selector a.cx-second-level-menu-item:nth-child(2)
+And I wait until service ready
+Then I see head of page with css selector h3.ng-scope contains: You have no advisor yet
+And I wait small timeout
+When I click on "Search for advisor" button with css selector h3.ng-scope > a:nth-child(1)
+And I wait until service ready
+Then I see head of page with css selector .cx-container > div:nth-child(1) > div:nth-child(1) is Find Advisor
+
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+!-- Do the same as intermediate
+Scenario: Current Advisor page
+GivenStories:
+    stories/advisor-client/check_current_advisor_page.story#{name:Current Advisor page},
+Given Do nothing
+
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+!-- Do the same as expert
+Scenario:
+Current Advisor page
+GivenStories:
+    stories/advisor-client/check_current_advisor_page.story#{name:Current Advisor page},
+Given Do nothing

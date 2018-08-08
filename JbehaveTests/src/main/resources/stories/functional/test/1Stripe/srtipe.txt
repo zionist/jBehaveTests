@@ -1,0 +1,51 @@
+Story: Functional stripe
+
+Scenario:
+Setup params. Set user to Advisor
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+
+
+
+
+Scenario: api/CxStripeProfile/UpdateProfile
+Meta:
+@name Stripe
+Scenario:
+Login as Advisor
+GivenStories:
+    stories/functional/test/login/login.story#{name:Login},
+Given Do nothing
+Given request body:
+{
+  "token": "%{token"}",
+  "email": "%{username}"
+}
+When I perform POST request to api/CxStripeProfile/UpdateProfile
+Then response has status 204
+And I save JSON field value using groovy query it["token"] into variable token
+Then response body is empty
+
+!-- pk_test_TcqZOcWVqsjnkbrQDBzSNgpQ
+Scenario: api/CxStripeProfile/GetProfileSummary
+Meta:
+@name Stripe two
+Given request body is empty
+When I perform POST request to api/CxStripeProfile/GetProfileSummary
+Then response has status 200
+Then I save JSON field value using groovy query it["StripePublicKey"] into variable StripePublicKey
+Then response body is:
+{
+  "Profile": {
+    "IsCardConnected": true,
+    "IsAccountConnected": false,
+    "CardLast4": "1111",
+    "CardBrand": "Visa",
+    "AccountEmail": null,
+    "AccountName": null,
+    "AccountDetailsSubmitted": false,
+    "AccountTransfersEnabled": false
+  },
+  "StripePublicKey": "%{StripePublicKey}",
+  "Email": "%{username}"
+}

@@ -1,0 +1,128 @@
+Story: Mall admin deactivate items
+
+Narrative:
+As a account admin user
+I want to deactivate items in Mall
+
+Scenario:
+Setup params. Set user to account admin
+Meta:
+@basic
+Given Set test param username value from property param.accountadmin.username
+And Set test param password value from property param.accountadmin.password
+And I generate name_ + UUID and put it to test param testName
+
+Scenario: Create user as account admin
+Meta:
+@name Create user as account admin
+GivenStories:
+    stories/login/admin_login.story#{name:Login to admin interface as account admin}
+Given Do nothing
+
+Scenario: Deactivate Newsletter in Mall
+Meta:
+@name Deactivate Newsletter item in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Open list of Newsletters
+When I click on Newsletter item with css selector #itemType > option:nth-child(1)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: E-Newsletter #2
+!-- Deactivate Newsletter
+When I click on Deactivate button with css selector div.row:nth-child(9) > div:nth-child(6) > a:nth-child(1)
+And I wait small timeout
+And I type Test Deactivation into chart Deactivation reason with css selector .form-control
+And I click on Deactivate button with css selector .btn
+Then I see Toaster item with css selector .toast-message is: Mall item deactivated
+
+Scenario: Deactivate Newsletter Issue in MALL
+Meta:
+@name Deactivate Newsletter Issue in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Open list of Newsletter Issue
+When I click on Newsletter Issue item with css selector #itemType > option:nth-child(2)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter Issue item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: issue
+!-- Deactivate Newsletter Issue
+When I click on Deactivate button with css selector div.row:nth-child(9) > div:nth-child(5) > a:nth-child(1)
+And I wait small timeout
+And I type Test Deactivation into chart Deactivation reason with css selector .form-control
+And I click on Deactivate button with css selector .btn
+Then I see Toaster item with css selector .toast-message is: Mall item deactivated
+
+Scenario: Deactivate Opinion in MALL
+Meta:
+@name Deactivate Opinion in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Open list of Opinion
+When I click on Opinion item with css selector #itemType > option:nth-child(3)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Opinion item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: A-Opinion #1
+!-- Deactivate Opinion
+When I click on Deactivate button with css selector div.row:nth-child(9) > div:nth-child(6) > a:nth-child(1)
+And I wait small timeout
+And I type Test Deactivation into chart Deactivation reason with css selector .form-control
+And I click on Deactivate button with css selector .btn
+Then I see Toaster item with css selector .toast-message is: Mall item deactivated
+
+Scenario: Deactivate Chart in MALL
+Meta:
+@name Deactivate Chart in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Open list of Chart
+When I click on Chart item with css selector #itemType > option:nth-child(4)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Chart item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: Chart #1 with PDF
+!-- Deactivate Chart
+When I click on Deactivate button with css selector div.row:nth-child(9) > div:nth-child(6) > a:nth-child(1)
+And I wait small timeout
+And I type Test Deactivation into chart Deactivation reason with css selector .form-control
+And I click on Deactivate button with css selector .btn
+Then I see Toaster item with css selector .toast-message is: Mall item deactivated
+
+Scenario: Deactivate Portfolio model in MALL
+Meta:
+@name Deactivate Portfolio model in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Open list of Portfolio model
+When I click on Portfolio model item with css selector #itemType > option:nth-child(5)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio model item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: A-P2
+!-- Deactivate Portfolio model
+When I click on Deactivate button with css selector div.row:nth-child(9) > div:nth-child(6) > a:nth-child(1)
+And I wait small timeout
+And I type Test Deactivation into chart Deactivation reason with css selector .form-control
+And I click on Deactivate button with css selector .btn
+Then I see Toaster item with css selector .toast-message is: Mall item deactivated
+
+Scenario: Deactivate Portfolio subscription in MALL
+Meta:
+@name Deactivate Portfolio subscription in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Open list of Portfolio subscription
+When I click on Portfolio subscription item with css selector #itemType > option:nth-child(6)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio subscription item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: E-P2
+!-- Deactivate Portfolio subscription
+When I click on Deactivate button with css selector div.row:nth-child(9) > div:nth-child(6) > a:nth-child(1)
+And I wait small timeout
+And I type Test Deactivation into chart Deactivation reason with css selector .form-control
+And I click on Deactivate button with css selector .btn
+Then I see Toaster item with css selector .toast-message is: Mall item deactivated

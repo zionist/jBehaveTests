@@ -1,0 +1,25 @@
+Story: Community -> Members -> Clubs page
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Members -> Clubs page
+Meta:
+@Name Members -> Clubs page
+Given I logged in with %{username} and %{password}
+When I click on Community menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Community')]
+When I click on Members  with link selector Members
+And I wait until service ready
+!-- find members "ContAdmin_Advisor"
+When I type ContAdmin_Advisor into search field with css selector #community__members__search-input
+And I wait small timeout
+And I click on member name with css selector .member-card__header
+And I click on menu item "Clubs" with css selector #community__menu__investment-clubs-link
+And I wait until service ready
+Then I see title of page with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) is: Clubs
+Then I see place holder with css selector span.ng-binding:nth-child(1) is: NO DATA FOUND
+Given Do nothing
+

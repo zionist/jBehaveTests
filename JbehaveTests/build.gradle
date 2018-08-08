@@ -1,0 +1,131 @@
+apply plugin: 'java'
+apply plugin: 'application'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+configurations {
+    jbehave_resources
+}
+
+dependencies {
+    // Groovy
+    compile 'org.codehaus.groovy:groovy-all:2.4.5'
+    // Logging
+    compile 'org.slf4j:slf4j-api:1.7.7'
+    runtime 'ch.qos.logback:logback-classic:1.1.2'
+    // Spring
+    compile 'org.springframework:spring-context:4.0.6.RELEASE'
+    compile 'org.springframework:spring-tx:4.0.6.RELEASE'
+    // Junit
+    compile 'junit:junit:4.4'
+    // Jbehave
+    compile 'org.jbehave:jbehave-core:4.0.4'
+    compile 'org.jbehave:jbehave-spring:4.0.4'
+    jbehave_resources ( 'org.jbehave.site:jbehave-site-resources:3.3@zip')
+    // Selenium
+    ext.seleniumVersion = '3.4.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version:seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version:seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-ie-driver', version:seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version:seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-edge-driver', version:seleniumVersion
+    // Ok http client
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    // mail client
+    compile 'javax.mail:javax.mail-api:1.5.5'
+    compile 'com.sun.mail:javax.mail:1.5.5'
+    // html parser
+    compile 'org.jsoup:jsoup:1.8.3'
+
+    // Gson
+    compile 'com.google.code.gson:gson:2.6.2'
+    // Json diif
+    compile group: 'com.github.fge', name: 'json-patch', version: "1.9"
+    // Stripe
+    compile 'com.stripe:stripe-java:4.3.0'
+
+    // Jooq
+    //compile 'org.jooq:jooq:3.5.1'
+    //compile 'org.jooq:jooq-codegen:3.5.1'
+    //compile 'org.jooq:jooq-meta:3.5.1'
+    // Postgresql
+    // compile "org.postgresql:postgresql:9.4-1200-jdbc41"
+    // retrofit
+    //compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    //compile 'com.squareup.okhttp:okhttp:2.0.0'
+
+    //compile fileTree(dir: 'lib', include: ['*.jar'])
+}
+
+task extractJbehaveResources(type: Copy) {
+    configurations.jbehave_resources.asFileTree.each {
+        from( zipTree(it) )
+    }
+    into file("${project.buildDir}/classes/jbehave/view/")
+}
+
+task wrapper(type: Wrapper) {
+    description 'Generates Gradle wrapper scripts'
+    gradleVersion = '4.1'
+}
+
+task testStories(type: JavaExec) {
+    description 'Runs all jbehave stories. ' +
+            '\n -Pstory option for stories glob ' +
+            '\n -Pmeta option for meta filterng'
+    group 'test'
+    main = "com.tickeron.test.web.functional.Runner"
+    jvmArgs = ["-Xmx1024m", "-Xms1024m"]
+    classpath += files(sourceSets.main.runtimeClasspath)
+        String story = project.getProperties().get('story', '/')
+        systemProperty 'story.glob', story
+
+    if (project.hasProperty('meta')) {
+        String meta = project.getProperties().get('meta', '')
+        systemProperty 'meta.filter', meta
+    } else {
+        systemProperty 'meta.filter', ''
+    }
+    if (project.hasProperty('props')) {
+        String props = project.getProperties().get('props', '')
+        systemProperty 'tests.properties', props
+    } else {
+        systemProperty 'tests.properties.filter', ''
+    }
+    if (project.hasProperty("server.url"))
+        systemProperty 'server.url', project.getProperties().get('server.url', '')
+}
+
+//task findTags(type: JavaExec) {
+//    description 'Find all <a> tags without href to application' +
+//            '\n -PhtmlPath path to html files'
+//    main = "com.tickeron.test.common.FindTags"
+//    classpath += files(sourceSets.main.runtimeClasspath)
+//    args(htmlPath.split(','))
+//}
+
+task findFuncMethods(type: JavaExec) {
+    description 'Find all func methods, covered in func tests'
+    main = "com.tickeron.test.common.FindFuncMethods"
+    classpath += files(sourceSets.main.runtimeClasspath)
+}
+
+//extractJbehaveResources.mustRunAfter testStories
+testStories.dependsOn extractJbehaveResources
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
+//task jooq(type: JavaExec, dependsOn: processResources) {
+//    description 'Generates jOOQ sources for database'
+//    main = "org.jooq.util.GenerationTool"
+//    //classpath += fileTree(dir: 'lib', include: ['*.jar'])
+//    classpath += files(sourceSets.main.runtimeClasspath)
+//    //classpath += files("$buildDir/resources/main")
+//    args = ["jooq-codegen.xml"]
+//}

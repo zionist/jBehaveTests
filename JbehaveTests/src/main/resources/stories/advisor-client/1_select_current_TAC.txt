@@ -1,0 +1,75 @@
+Story: Make sure that advisor can select current T&C to be used by default.
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate firstTAC_ + UUID and put it to test param titleGenerated
+And I generate secondTAC_ + UUID and put it to test param newTitleGenerated
+And I generate Some text + UUID and put it to test param textGenerated
+
+
+Scenario:
+advisor can select current T&C
+Meta:
+@Name advisor can select current T&C
+GivenStories:
+    stories/advisor-client/create_TandC_with_PDF.story#{name:Create T&C with PRD}
+!-- Create second T&C with plain text
+!-- unmark check-box "Make this my current terms and conditions"
+
+!-- Click on create new
+When I click on create new with css selector .col-xs-2 > button:nth-child(1)
+And I wait until service ready
+!-- And I click on checkbox with css selector .checkbox > label:nth-child(1)
+And I wait small timeout
+And I type %{newTitleGenerated} into title fieal with css selector input.form-control
+And I wait small timeout
+And I type %{textGenerated} into Contract text textarea with css selector textarea.form-control:nth-child(2)
+And I wait big timeout
+And I click on button Save with containsText selector Save
+And I wait until service ready
+And I click on make current with css selector tr.ng-scope:nth-child(3) > td:nth-child(4) > button:nth-child(1)
+And I wait small timeout
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+advisor can remove T&C
+Meta:
+@Name advisor can remove T&C
+Given I logged in with %{username} and %{password}
+When I open CLIENTS menu
+And I wait small timeout
+And I click on Terms And Conditions menu with containsText selector Manage Terms & Conditions
+And I wait until service ready
+And I click on restore icon with css selector tr.ng-scope:nth-child(2) > td:nth-child(7) > button:nth-child(2)
+And I wait big timeout
+And I click on Yes button with css selector button.ng-binding:nth-child(1)
+And I wait big timeout
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:advisor can remove T&C2
+
+Meta:
+@Name advisor can remove T&C
+Given I logged in with %{username} and %{password}
+When I open CLIENTS menu
+When I click on Clients menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'CLIENTS')]
+And I wait small timeout
+And I click on Terms And Conditions menu with containsText selector Manage Terms & Conditions
+And I wait until service ready
+And I click on restore icon with css selector tr.ng-scope:nth-child(2) > td:nth-child(6) > button:nth-child(2)
+And I wait big timeout
+And I click on Yes button with css selector button.ng-binding:nth-child(1)
+And I wait big timeout
+
+Given Do nothing

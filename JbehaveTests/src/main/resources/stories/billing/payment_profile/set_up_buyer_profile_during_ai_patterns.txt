@@ -1,0 +1,38 @@
+Story: Billing, payment profile, enter card
+
+Scenario:
+Setup params set user to advisor
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+
+Scenario:
+Open AI patterns page. Click on subscribe
+Given User %{username} with password %{password} has no AI Patterns subscription
+And There is no credit card in profile for %{username} with %{password}
+And I logged in with %{username} and %{password}
+When I open MALL menu
+And Mall. Open AI pattern recoginition. Start for free
+And I wait until service ready
+And I execute javascript $("input.ng-pristine:nth-child(1)").click()
+And I click on Subscribe button with containsText selector Subscribe for
+Then Billing. Check I'm on buyer profile page
+
+Scenario:
+Connect credit card and buy AI pattern subscribtion
+Meta:
+@name Connect credit card and buy AI pattern subscribtion
+GivenStories:
+    stories/ai_patterns/patterns_subscription.story#{name:Patterns Subscribe}
+Given Do nothing
+When I open Payments menu
+And I wait until service ready
+Then Billing. I see last transaction has amount $19.95 and status Completed
+When Billing. Save transaction number to variable transactionNumber
+Then Stripe. I see transaction with hash %{transactionNumber} has amount 1995
+
+
+
+
+
+
+

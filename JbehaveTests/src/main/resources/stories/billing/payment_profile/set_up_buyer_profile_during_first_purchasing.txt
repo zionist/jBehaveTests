@@ -1,0 +1,41 @@
+Story: Billing, payment profile, enter card
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate Opinion_ + UUID and put it to test param opinonGeneratedName
+
+Scenario: create opinion and publish it
+Meta:
+@name create opinion and publish it
+GivenStories:
+    stories/mall/opinion/cred_opinion.story#{name:Create opinion},
+    stories/mall/opinion/cred_opinion.story#{name:Publish opinion}
+Given Do nothing
+
+!-- Given I logged in with %{username} and %{password}
+!-- When I delete connected card from Buyer profile for %{username} with %{password}
+Scenario: buy Opinion product in mall, setup card
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given There is no credit card in profile for %{username} with %{password}
+Given I logged in with %{username} and %{password}
+When I open MALL menu
+And I wait until service ready
+When Mall. Open buy opinion
+!-- Find opinion
+When I execute javascript $(".form-control").val("%{opinonGeneratedName}")
+And I execute javascript $(".form-control").change()
+And I wait small timeout
+And I click on opinion in list with containsText selector %{opinonGeneratedName}
+And I wait until service ready
+Then I see header with css selector .pull-left is %{opinonGeneratedName}
+And I wait small timeout
+When I will execute javascript $('label:contains("I agree with")').children('input').click()
+!-- When I click on checkbox with css selector .ng-untouched
+And I wait small timeout
+And I click on buy broduct button with css selector .btn-primary-sm
+And I wait small timeout
+Then Billing. Check I'm on buyer profile page
+

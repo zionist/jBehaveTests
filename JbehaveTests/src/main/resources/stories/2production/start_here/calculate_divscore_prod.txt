@@ -1,0 +1,65 @@
+Story: I need Calculate Diversification Score (untill title only)
+
+Scenario:
+Setup params. Set user to Beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario:
+I need Calculate Diversification Score
+Meta:
+@name Calculate DivScore
+
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+
+When I click on "Calculate DivScore" button with css selector div.cx-start-here-main__task-block:nth-child(5) > div:nth-child(3) > button:nth-child(1)
+When I click on Next with css selector .btn-primary-wiz-sm
+!-- One at a time
+When I click on One at a time with css selector .selected > div:nth-child(1)
+!-- Add tickers
+When I click on ticker selection input with css selector #filterInput
+And I will wait until ticker element element with css selector #chb34108 will be visible
+When I start recording action
+And I will move in action to A ticker checkbox element with css selector #chb34108
+And I will click in action on A ticker checkbox element with css selector #chb34108
+And I will move in action to AA ticker checkbox element with css selector #chb33569
+And I will click in action on AA ticker checkbox element with css selector #chb33569
+And I will move in action to Add Tickers element with css selector input.btn-primary:nth-child(1)
+And I will click in action on Add Tickers element with css selector input.btn-primary:nth-child(1)
+Then I perform previously recorded action
+When I wait big timeout
+!-- Check link "missing ticker"
+When I click on Report a missing ticker with css selector a.text-uppercase
+Then I see pop up with css selector div.form-horizontal:nth-child(3) contains: Ticker
+When I click on "Cancel" button with css selector input.btn-default
+!-- Remove ticker
+When I click on "Remove" icon with css selector div.cx-start-here-wizard-block380:nth-child(2) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(5) > a:nth-child(1) > i:nth-child(1)
+When I click on Next with css selector button.btn:nth-child(4)
+!-- Dollars
+When I click on Dollars with css selector .selected > div:nth-child(1)
+!-- Allocations
+When I click on input field with css selector tr.ng-scope > td:nth-child(5) > span:nth-child(2) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)
+And I clear the input field with css selector .form-control
+When I type 100 into input field with css selector .form-control
+And I click on "Apply" button with css selector div.row:nth-child(4) > div:nth-child(1) > input:nth-child(1)
+When I click on Next with css selector button.btn:nth-child(3)
+!-- Moderate
+When I click on Moderate with css selector .cx-start-here-task__wizard_block > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+!-- 5-15
+When I click on "5-15 years" button with css selector div.row:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+When I click on "NO" button with css selector div.row:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+When I click on "NO" button with css selector div.row:nth-child(5) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Calculate Diversification Score as Advisor
+GivenStories:
+    stories/2production/start_here/calculate_divscore_prod.story#{name:Calculate DivScore}
+Given Do nothing

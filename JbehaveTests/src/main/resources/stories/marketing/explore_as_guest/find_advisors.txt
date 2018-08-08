@@ -1,0 +1,23 @@
+Story: Check functionality of Find Advisors page
+
+Scenario:
+Find Advisors
+Meta:
+@name Find Advisors
+Given Browser ready
+When I open EXPLORE AS GUEST menu
+And I wait small timeout
+Then I see header with xpath selector //span[text()='SHARE'] contains: SHARE
+!-- Open Find Advisors
+When I click on Find Advisors tab with xpath selector //a[@href='/app/guest#!/find_advisor']
+And I wait small timeout
+Then I see header with css selector .explore-as-guest__intro-page-container__left-info-plate-title contains: Find an Advisor
+!-- Click on first Advice from Advisor
+When I click on first Advice from Advisor with xpath selector //a[@href='/app/starthere#!/human-intelligence/cash/advice-from-advisor?offerUpgrade']
+And I wait small timeout
+Then I see sign up pop-up window and close it
+And I wait small timeout
+!-- second Advice from Advisor
+When I click on second Advice from Advisor with xpath selector //a[@href='/app/starthere#!/human-intelligence/account/advice-from-advisor?offerUpgrade']
+And I wait small timeout
+Then I see sign up pop-up window and close it

@@ -1,0 +1,143 @@
+Story: Check pattern inbox
+
+Scenario:
+Setup params. Set user to AccountAdmin
+Given Set test param username value from property param.accountadmin.username
+And Set test param password value from property param.accountadmin.password
+
+Scenario: Create prefill database
+GivenStories:
+    stories/timemachine/timemachine.story#{name:Create prefill database},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Subscribe to alerts
+Meta:
+@name Subscribe and load test data
+GivenStories:
+    stories/login/login.story#{name:Login with email and password},
+When I click on Advisor menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'TRADE IDEAS')]
+And I click on Patterns with link selector Patterns
+And I wait until service ready
+Then I see header with css selector .col-sm-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h1:nth-child(1) is Overview
+!-- Go to subscription page
+When I click on Subscription and Alert configuration with css selector .fa-refresh
+And I wait until service ready
+Then I see header with css selector .cx-pattern-subscription-page > div:nth-child(1) > div:nth-child(2) > h1:nth-child(1) is Subscriptions
+!-- Subscribe
+When I click on Subscribe button with link selector Subscribe for A.I. Tickeron
+Then I see toaster with xpath selector .//*[@id='toast-container']/div is: Successfully subscribed
+!-- Configure Alerts
+When I wait small timeout
+And I click on Configure trade alerts link with css selector .fa-plus-circle
+And I wait until service ready
+Then I see header with css selector .col-xs-8 > h1:nth-child(1) is Trade Alert Configuration
+When I click on Broadening Bottom pattern chebox with xpath selector //span[contains(., 'Broadening Bottom')]
+And I click on Broadening Top chebox with xpath selector //span[contains(., 'Broadening Top')]
+And I click on Bearish tab with link selector Bearish (0)
+And I wait small timeout
+And I click on Broadening Bottom checbox with css selector .col-sm-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(7) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > span:nth-child(3) > i:nth-child(1)
+And I click on Broadening Top chebox with css selector .col-sm-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(7) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > span:nth-child(3) > i:nth-child(1)
+And I click on Next button with css selector a.btn
+And I wait until service ready
+When I click on Select All checkbox with css selector div.text-right:nth-child(1) > span:nth-child(1) > i:nth-child(1)
+And I click on Finish button with xpath selector //button[contains(., 'Finish')]
+And I wait until service ready
+Then I see header with css selector .cx-pattern-subscription-page > div:nth-child(1) > div:nth-child(2) > h1:nth-child(1) is Subscriptions
+
+Scenario:
+Setup params. Set user to AccountAdmin
+Given Set test param username value from property param.accountadmin.username
+And Set test param password value from property param.accountadmin.password
+
+Scenario: Forward to next day
+GivenStories:
+    stories/timemachine/timemachine.story#{name:Check prefild database created},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Check Pattern inbox
+Meta:
+@name Check Pattern inbox
+GivenStories:
+    stories/login/login.story#{name:Login with email and password},
+!-- Go to Patterns page
+When I click on Advisor menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'TRADE IDEAS')]
+And I click on Patterns with link selector Patterns
+And I wait until service ready
+Then I see header with css selector .col-sm-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h1:nth-child(1) is Overview
+!-- Open pattern inbox tab
+When I click on Pattern inbox tab with css selector .fa-th-list
+And I wait until service ready
+Then I see header with css selector .col-sm-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h1:nth-child(1) is Trade Alerts. Pattern Inbox
+!-- Check emerging tab
+When I click on first pattern in list with css selector tr.ng-scope:nth-child(2) > td:nth-child(1) > div:nth-child(1) > a:nth-child(1) > img:nth-child(1)
+And I wait until service ready
+Then I see header with css selector div.text-center:nth-child(10) > h2:nth-child(1) is Statistics for this company
+!-- Bookmark/Unbookmark
+When I click on bookmark button with link selector Bookmark
+And I wait small timeout
+Then I see Un-bookmark button with link selector Un-Bookmark is Un-Bookmark
+When I click on Un-bookmark button with link selector Un-Bookmark
+And I wait small timeout
+Then I see Bookmark button with link selector Bookmark is Bookmark
+!-- back to Pattern Inbox
+When I click on back link with css selector .fa-angle-left
+And I wait until service ready
+Then I see header with css selector .col-sm-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h1:nth-child(1) is Trade Alerts. Pattern Inbox
+!-- Check confirmed
+When I click on confirmed tab with partialLinkText selector Confirmed
+And I wait until service ready
+And I will wait until first pattern element with css selector tr.ng-scope:nth-child(2) > td:nth-child(1) > div:nth-child(1) > a:nth-child(1) > img:nth-child(1) will be visible
+!-- Check successful
+When I click on successful tab with partialLinkText selector Successful
+And I wait until service ready
+Then I see Confidence of Reaching Target Price with css selector tr.ng-scope:nth-child(2) > td:nth-child(4) > span:nth-child(1) is 100.00
+Then I see Distance to Target Price with css selector tr.ng-scope:nth-child(2) > td:nth-child(5) is Target Reached
+!-- Check expired
+When I click on successful tab with partialLinkText selector Expired
+And I wait until service ready
+Then I see header with css selector .col-sm-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h1:nth-child(1) is Trade Alerts. Pattern Inbox
+
+!-- Exclude pattern from alerts
+When I click on Broadenning bottom item with css selector ul.social-menu:nth-child(3) > li:nth-child(1) > a:nth-child(1)
+And I wait until service ready
+Then I see header with css selector .col-sm-9 > h1:nth-child(1) is Broadening Bottom
+When I click on exclude button with link selector Exclude from Pattern Trade Alerts
+And I wait small timeout
+And I click on Yes button with xpath selector //button[contains(., 'Yes')]
+Then I see toaster with xpath selector .//*[@id='toast-container']/div is: Successfully unsubscribed from pattern.
+!-- Include pattern to alerts
+When I click on include button with link selector Include in Pattern Trade Alerts
+And I wait until service ready
+Then I see header with css selector .col-xs-6 > h1:nth-child(1) is:  Trade Alert Configuration
+When I click on Select All checkbox with css selector div.text-right:nth-child(1) > span:nth-child(1)
+And I click on Finish button with xpath selector //button[contains(., 'Finish')]
+And I wait until service ready
+Then I see header with css selector .cx-pattern-subscription-page > div:nth-child(1) > div:nth-child(2) > h1:nth-child(1) is Subscriptions
+
+!-- Remove all subscriptions
+When I click on first remove pattern icon with css selector .cx-pattern-table > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > th:nth-child(1) > div:nth-child(1) > i:nth-child(1)
+And I wait until service ready
+And I click on next remove iyem with css selector .cx-pattern-table > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > th:nth-child(1) > div:nth-child(1) > i:nth-child(1)
+And I wait until service ready
+And I click on next remove iyem with css selector .cx-pattern-table > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > th:nth-child(1) > div:nth-child(1) > i:nth-child(1)
+And I wait until service ready
+And I click on next remove iyem with css selector .cx-pattern-table > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > th:nth-child(1) > div:nth-child(1) > i:nth-child(1)
+And I wait until service ready
+Then I see text with css selector .cx-pattern-table > span:nth-child(1) is You have no active subscriptions
+
+Scenario: Unsubscribe from patterns
+GivenStories:
+    stories/trade_ideas/unsubscribe.story#{name:Unsubscribe from patterns},
+Given Do nothing

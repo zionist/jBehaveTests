@@ -1,0 +1,207 @@
+Story: Make sure that Chats work correctly between advisor and client in Connected-Subscribed statuses
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario: Make client visible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+Given Set test param clientName with value Quan Public
+
+Scenario: Login as Advisor, Create T&C, click on Connect
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value James Adv.
+
+Scenario: As client confirm connection
+GivenStories:
+   stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection},
+
+Given Do nothing
+
+Scenario:
+Send type message for advisor in chat
+Meta:
+@name Send type message for advisor in chat
+When I wait big timeout
+And I click on Chats link with css selector i.ti:nth-child(1)
+And I wait small timeout
+Then I see Chat header with css selector .cx-chat-default-header-title contains: YOU AND ADVISOR CHAT PRIVATELY
+When I type Hello Advisor into chat input field with css selector .cx-chat-default__new-message__textarea
+And I click on Send button with css selector .btn-secondary-sm
+And I wait small timeout
+Then I see text with css selector pre.ng-binding contains: Hello Advisor
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value Quan Public
+
+Scenario:
+Send type message for client in chat
+Meta:
+@name Send type message for client in chat
+Given I logged in with %{username} and %{password}
+!-- Open Advisor/Client menu
+When I wait until service ready
+And I click on Clients menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'CLIENTS')]
+!-- And I click on Add potential Clients item with css selector .open > ul:nth-child(3) > li:nth-child(1) > a:nth-child(2)
+And I wait until service ready
+And I click on clients name with containsText selector %{clientName}
+And I wait until service ready
+And I click on Chats link with css selector i.ti:nth-child(1)
+And I wait small timeout
+Then I see Chat header with css selector .cx-chat-default-header-title contains: YOU AND YOUR CLIENT CHAT PRIVATELY
+Then I see Chat message with css selector pre.ng-binding contains: Hello Advisor
+When I type Hello Client into chat input field with css selector .cx-chat-default__new-message__textarea
+And I click on Send button with css selector button.btn-secondary-sm
+And I wait small timeout
+Then I see text with css selector div.cx-chat-default__dialog__message__text:nth-child(3) > pre:nth-child(1) contains: Hello Client
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value James Adv.
+
+Scenario:
+Check message from advisor
+Meta:
+@name Check message from advisor
+Given I logged in with %{username} and %{password}
+!-- Open Advisor menu
+When I click on Advisor menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'ADVISORS')]
+!-- And I click on Find Advisor menu with css selector .open > ul:nth-child(3) > li:nth-child(1) > a:nth-child(2)
+And I wait until service ready
+And I click on tab connection with css selector .tabs-left > li:nth-child(2)
+And I wait until service ready
+And I click on advisor with containsText selector %{advisorName}
+And I wait until service ready
+And I click on Chats link with css selector i.ti:nth-child(1)
+And I wait small timeout
+Then I see Chat header with css selector .cx-chat-default-header-title contains: YOU AND ADVISOR CHAT PRIVATELY
+Then I see text with css selector div.cx-chat-default__dialog__message__text:nth-child(4) > pre:nth-child(1) contains: Hello Client
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value Quan Public
+
+Scenario: As Advisor send a bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As Advisor send a bid},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: As client end subscription
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client end subscription},
+Given Do nothing
+
+Scenario:
+Send type message for advisor in chat
+Meta:
+@name Send type message for advisor in chat
+When I wait big timeout
+And I click on Chats link with css selector .ti-chat
+And I wait small timeout
+Then I see Chat header with css selector .cx-chat-default-header-title contains: YOU AND ADVISOR CHAT PRIVATELY
+When I type King into chat input field with css selector .cx-chat-default__new-message__textarea
+And I click on Send button with css selector .col-xs-2 > button:nth-child(1)
+And I wait small timeout
+Then I see text with css selector div.cx-chat-default__dialog__message:nth-child(4) > div:nth-child(3) > pre:nth-child(1) contains: King
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value Quan Public
+
+Scenario:
+Send type message for client in chat
+Meta:
+@name Send type message for client in chat
+Given I logged in with %{username} and %{password}
+!-- Open Advisor/Client menu
+When I wait until service ready
+And I click on Clients menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'CLIENTS')]
+And I wait until service ready
+And I click on Your Clients item with css selector a.cx-second-level-menu-item:nth-child(2)
+And I wait until service ready
+And I type Quan Public into search field with css selector .form-control
+And I wait small timeout
+And I click on clients name with containsText selector %{clientName}
+And I wait until service ready
+And I click on Chats link with css selector .ti-chat
+And I wait small timeout
+Then I see Chat header with css selector .cx-chat-default-header-title contains: YOU AND YOUR CLIENT CHAT PRIVATELY
+Then I see Chat message with css selector div.cx-chat-default__dialog__message:nth-child(4) > div:nth-child(4) > pre:nth-child(1) contains: King
+When I type Kong into chat input field with css selector .cx-chat-default__new-message__textarea
+And I click on Send button with css selector .col-xs-2 > button:nth-child(1)
+And I wait small timeout
+Then I see text with css selector div.cx-chat-default__dialog__message:nth-child(5) > div:nth-child(3) > pre:nth-child(1) contains: Kong
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value James Adv.
+
+Scenario:
+Check message from advisor
+Meta:
+@name Check message from advisor
+Given I logged in with %{username} and %{password}
+!-- Open Advisor menu
+When I click on Advisor menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'ADVISORS')]
+And I wait until service ready
+And I click on tab connection with css selector .tabs-left > li:nth-child(2)
+And I wait until service ready
+And I click on advisor with containsText selector %{advisorName}
+And I wait until service ready
+And I click on Chats link with css selector .ti-chat
+And I wait small timeout
+Then I see Chat header with css selector .cx-chat-default-header-title contains: YOU AND ADVISOR CHAT PRIVATELY
+Then I see text with css selector div.cx-chat-default__dialog__message:nth-child(5) > div:nth-child(4) > pre:nth-child(1) contains: Kong
+Then Do nothing
+
+Scenario: As client unsubscription disconnect
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client unsubscription disconnect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario:
+Reject bid as client
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible}
+Given Do nothing
+

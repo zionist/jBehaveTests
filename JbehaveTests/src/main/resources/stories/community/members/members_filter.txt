@@ -1,0 +1,47 @@
+Story: Community -> Members -> Filter
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Members -> Filter
+Meta:
+@Name Members -> Filter
+Given I logged in with %{username} and %{password}
+When I click on Community menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Community')]
+When I click on Members  with link selector Members
+And I wait until service ready
+!-- find all members who has beginner level
+And I click on checkbox "Intermediates" with css selector label.cx-checkbox:nth-child(2) > span:nth-child(2)
+And I click on checkbox "Experts" with css selector label.cx-checkbox:nth-child(3) > span:nth-child(2)
+And I click on checkbox "Advisors" with css selector label.cx-checkbox:nth-child(4) > span:nth-child(2)
+Then I see member level with css selector div.col-sm-3:nth-child(1) > cx-member:nth-child(1) > div:nth-child(1) > div:nth-child(3) is: Beginner
+When I wait small timeout
+!-- find all members who has interm level
+When I click on checkbox "Beginner" with css selector .members__filters > label:nth-child(1) > span:nth-child(2)
+And I click on checkbox "Intermediates" with css selector label.cx-checkbox:nth-child(2) > span:nth-child(2)
+And I wait small timeout
+Then I see member level with css selector div.col-sm-3:nth-child(1) > cx-member:nth-child(1) > div:nth-child(1) > div:nth-child(3) is: Intermediate
+!-- find all members who has expert level
+When I click on checkbox "Intermediates" with css selector label.cx-checkbox:nth-child(2) > span:nth-child(2)
+And I click on checkbox "Experts" with css selector label.cx-checkbox:nth-child(3) > span:nth-child(2)
+And I wait small timeout
+Then I see member level with css selector div.col-sm-3:nth-child(1) > cx-member:nth-child(1) > div:nth-child(1) > div:nth-child(3) contains: Expert
+!-- find all members who has advisor level
+When I click on checkbox "Experts" with css selector label.cx-checkbox:nth-child(3) > span:nth-child(2)
+And I click on checkbox "Advisors" with css selector label.cx-checkbox:nth-child(4) > span:nth-child(2)
+And I wait small timeout
+Then I see member level with css selector div.col-sm-3:nth-child(1) > cx-member:nth-child(1) > div:nth-child(1) > div:nth-child(3) contains: Advisor
+And I wait small timeout
+!-- check filter "Show most popular"
+When I click on checkbox "Show most popular" with css selector label.cx-checkbox:nth-child(6) > span:nth-child(2)
+And I wait small timeout
+Then I see first member James Adv. with css selector div.col-sm-3:nth-child(1) > cx-member:nth-child(1) > div:nth-child(1) > div:nth-child(4) is: 9 followers
+And I wait small timeout
+!-- drop filter
+When I click on Community menu with css selector #community__menu__tickers-link
+When I click on Community menu with css selector #community__menu__members-link
+!-- find members "James Adv."
+When I type James Adv. into search field with css selector #community__members__search-input
+Then I see Name member with css selector .member-card__header is: James Adv.

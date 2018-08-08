@@ -1,0 +1,29 @@
+Story: Community -> Members -> Follow member
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Members -> Follow member
+Meta:
+@Name Members -> Follow
+Given I logged in with %{username} and %{password}
+When I click on Community menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Community')]
+When I click on Members  with link selector Members
+And I wait until service ready
+!-- Follow member (Advisor AT) and check that you have appeared on the ‘Followers’ page
+When I type Advisor AT into search field with css selector #community__members__search-input
+And I wait small timeout
+And I click on button "Follow" with css selector #community__members__follow-button
+And I wait until service ready
+And I click on check-box with css selector ul.dropdown-menu > li:nth-child(5) > label:nth-child(1) > span:nth-child(2)
+And I wait until service ready
+And I click on first member name with css selector .member-card__header
+And I wait until service ready
+And I click on link "followers" with css selector #community__your-page__followers-link > span:nth-child(1)
+And I wait until service ready
+Then I see folower Advisor AT with css selector div.col-xs-4:nth-child(1) > cx-member:nth-child(1) > div:nth-child(1) > div:nth-child(2) is: Advisor AT
+When I click on left button "Follow" with css selector #community__members__follow-button
+And I click on check-box with css selector div.col-xs-6:nth-child(1) > ul:nth-child(2) > li:nth-child(5) > label:nth-child(1) > span:nth-child(2)

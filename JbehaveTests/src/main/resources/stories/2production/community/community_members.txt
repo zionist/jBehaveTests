@@ -1,0 +1,95 @@
+Story: Production - Check Members page in Community
+
+Scenario:
+Setup params. Set user to Expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+
+Scenario:
+Select any member from the list and check:  Overview, Predictions, Products in MALL, Investment Clubs, Webcasts, Bookmarked/Followed content,
+Blog, Q&A
+
+!-- Select first Expert on 'Members' page
+Given I logged in with %{username} and %{password}
+When I click on Community menu with css selector #page_menu__community
+And I wait until service ready
+And I click on Members menu with css selector #community__menu__members-link
+Then I see page header with css selector .social-title > h1:nth-child(1) contains: Members
+!-- Unmark beginners / intermediates / advisors
+When I click on checkbox 'Beginners' with css selector .members__filters > label:nth-child(1) > span:nth-child(2)
+When I click on checkbox 'Intermediates' with css selector label.cx-checkbox:nth-child(2) > span:nth-child(2)
+When I click on checkbox 'Advisors' with css selector label.cx-checkbox:nth-child(4) > span:nth-child(2)
+And I wait small timeout
+!-- select first Expert from the list
+And I click on first Expert with css selector div.col-sm-3:nth-child(1) > cx-member:nth-child(1) > div:nth-child(1) > div:nth-child(1) > img:nth-child(1)
+And I wait until service ready
+
+!-- Overview
+Then I see page header with css selector div.member-overview__block:nth-child(5) > div:nth-child(1) > div:nth-child(1) contains: Products in MALL
+!-- Check followers
+When I click on 'followers' link with css selector cx-member-info.ng-scope > div:nth-child(1) > div:nth-child(2) > a:nth-child(4) > span:nth-child(1)
+And I wait until service ready
+Then I see page header with css selector .member-followers__header > span:nth-child(1) contains: Followers of
+!-- Check Clubs and Predictions tabs
+When I click on 'Overview' button with css selector #community__menu__overview-link
+Then I see 2nd tab header with css selector  div.member-overview__block:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1)  contains:  Clubs
+Then I see 4th tab header with css selector div.member-overview__block:nth-child(3) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) contains:  Predictions
+!-- Check buttons
+!-- Invite to Club
+When I click on Invite element with css selector cx-member-info.ng-scope > div:nth-child(1) > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)
+And I click  on Invite to club with link selector Invite to Club
+When I wait until service ready
+Then I see page header with css selector h1.ng-scope contains: Invite to club
+!-- Then I see inscription with css selector .alert contains: You are not a member of any club at this time
+When I click on 'Overview' button with css selector #community__menu__overview-link
+And I wait until service ready
+!-- Invite to Webcast
+When I click on Invite element with css selector cx-member-info.ng-scope > div:nth-child(1) > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)
+And I click on Invite to webcast with link selector Invite to Webcast
+And I wait until service ready
+Then I see page header with css selector h1.ng-scope contains: Invite to webcast
+Then I see inscription with css selector p.ng-scope contains: You are not a member of any webcast at this time
+When I click on 'Overview' button with css selector #community__menu__overview-link
+And I wait until service ready
+!-- Invite to Portfolio Sharing
+When I click on Invite element with css selector cx-member-info.ng-scope > div:nth-child(1) > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)
+And I click on Invite to port sharing with link selector Invite to Portfolio Sharing
+And I wait until service ready
+Then I see page header with css selector .portfolio-share__header contains: Select a portfolio to share
+Then I see inscription with css selector .portfolio-share__no-portfolios contains: No portfolios to share
+
+!-- Predictions
+When I click on 'Predictions' button with css selector #community__predictions-link
+Then I see page header with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1)) contains: Predictions
+Then I see 1st tab header with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Current Predictions
+Then I see 2nd tab hearer with css selector div.col-sm-6:nth-child(2) > div:nth-child(1) contains: Previous Predictions
+
+!-- Products in MALL
+When I click on 'Products in MALL' button with css selector #community__menu__products-in-mall-link
+Then I see page header with css selector .social-title > h1:nth-child(1) contains: Products in MALL
+
+!-- Investment Clubs
+When I click on 'Investment Clubs' button with css selector .fa-users
+Then I see page header with css selector .social-title > h1:nth-child(2) contains: Investment Clubs
+
+!-- Webcasts
+When I click on 'Webcasts' button with css selector .fa-video-camera
+Then I see page header with css selector .social-title > h1:nth-child(2) contains: Webcasts
+
+!-- Followed content
+When I click on 'Followed content' button with css selector .fa-bookmark
+Then I see page header with css selector .social-title > h1:nth-child(2) > span:nth-child(2) contains: Followed Articles
+!-- Check tabs
+When I click on 'Questions' tab with css selector .nav-tabs > li:nth-child(2) > a:nth-child(1)
+When I click on 'Articles' tab with css selector .nav-tabs > li:nth-child(1) > a:nth-child(1)
+
+!-- Blog
+When I click on 'Blog' button with css selector .fa-book
+Then I see page header with css selector .social-title > h1:nth-child(2) contains: Blog
+
+!-- Q&A
+When I click on 'Q&A' button with css selector .fa-comments
+Then I see page header with css selector .social-title > h1:nth-child(1) contains: Questions & Answers
+When I click on 'Questions asked' tab with css selector .nav-tabs > li:nth-child(2) > a:nth-child(1)
+When I click on 'Questions answered' tab with css selector .nav-tabs > li:nth-child(1) > a:nth-child(1)

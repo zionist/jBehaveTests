@@ -1,0 +1,101 @@
+Story: Make sure that advisor who hasn't get default TAC can't send bid to client
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario: Make client visible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.contentadmina.username
+Given Set test param password value from property param.contentadmina.password
+Given Set test param clientName with value Quan Public
+
+
+Scenario:
+Send connection request without created T&C
+Meta:
+@name Send connection request without created T&C
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+!-- Remove old T&C
+When I wait until service ready
+When I click on Clients menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'CLIENTS')]
+And I click on Terms And Conditions menu with containsText selector Manage Terms & Conditions
+And I wait until service ready
+Then I see Page header with css selector .col-xs-10 > h1:nth-child(1) is Terms And Conditions
+When I click on remove t&c with css selector button.btn-link:nth-child(2)
+And I wait small timeout
+And I click on Yes with css selector button.ng-binding:nth-child(1)
+And I wait until service ready
+!-- Open Advisor/Client menu
+And I click on Add potential Clients menu with containsText selector Add potential Clients
+And I wait until service ready
+And I type %{clientName} into search field with css selector .col-xs-9 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)
+And I wait small timeout
+And I click on clients name with containsText selector Quan Public
+And I wait until service ready
+Then I see "Not Connected" on head of page with css selector .cx-adv-bid-state__text > span:nth-child(1) contains: Not Connected
+When I click on connect button with containsText selector Connect
+And I wait until service ready
+And I wait small timeout
+Then I see "Connection request sent" on head of page with css selector .cx-adv-bid-state__text > span:nth-child(1) contains: Connection request sent
+Given Do nothing
+
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value ContAdmin_Advisor
+
+Scenario: Make sure that client can confirn connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection },
+Given Do nothing
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.contentadmina.username
+Given Set test param password value from property param.contentadmina.password
+Given Set test param clientName with value Quan Public
+
+Scenario: Make sure that advisor see warning message on bid page
+Meta:
+@name Make sure that advisor see warning message on bid page
+
+GivenStories:
+     stories/login/login.story#{name:Login with email and password}
+!-- Open Advisor/Client menu
+When I wait until service ready
+And I click on Client menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'CLIENTS')]
+And I click on second tab with css selector .tabs-left > li:nth-child(2)
+And I wait until service ready
+And I click on clients name with containsText selector %{clientName}
+And I wait until service ready
+And I click on Bid button with css selector span.ng-scope:nth-child(2) > button:nth-child(1)
+And I wait until service ready
+Then I see warning message on bid page with css selector .alert is You don't have default terms and conditions. Please click here to manage some to continue!
+And I wait small timeout
+When I click on chevron back with css selector .cx-breadcrumbs > a:nth-child(1)
+And I wait until service ready
+Given I unsubscribe and disconnect from client/advisor
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: Make sure that client can confirn connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing
+

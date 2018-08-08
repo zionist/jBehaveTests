@@ -1,0 +1,28 @@
+Story: functional exmaple portfolio creation
+
+Narrative:
+As a user
+I want to perform an action
+So that I can achieve a business goal
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.intermediate.username
+And Set test param password value from property param.intermediate.password
+And I generate Personal + UUID and put it to test param portfolioTitleGenerated
+
+Scenario: scenario description
+Given I authenticated using JSON with username %{username} and password %{password}
+And request body: {}
+When I perform POST request to api/CxLookUp/GetIndicators
+Then response has status 200
+
+Given request body: {request: {Offset: 0, PageSize: 9}}
+When I perform POST request to api/CxIExpert/GetPopularArticles
+Then response has status 200
+!-- And response JSON body is: []
+
+Given request body: {request: {Offset: 0, PageSize: 9}}
+When I perform POST request to api/CxIExpert/GetPopularBlogPosts
+Then response has status 200
+!-- And response JSON body is: []

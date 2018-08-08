@@ -1,0 +1,15 @@
+Story: Check Patterns
+
+Scenario:
+Setup params. Set user to Advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Overview page
+
+GivenStories:
+    stories/login/login.story#{name:Login with email and password},
+Given Do nothing
+
+When I click on $description with $selectorType selector $selector

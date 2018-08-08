@@ -1,0 +1,87 @@
+Story: Get refound as a buyer
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+Given Set test param mailusername value from property catchmail.catch01.username
+Given Set test param mailpassword value from property catchmail.catch01.password
+Given Set test param messageText with value Where is my money?
+Given Set test param adminusername value from property param.accountadmin.username
+And Set test param adminpassword value from property param.accountadmin.password
+
+!-- Scenario: AI Predictions Subscription for refound
+!--GivenStories:
+!--   stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Subscription}
+!--Given Do nothing
+!--When I open HOME menu
+!--And I wait big timeout
+!--And I wait big timeout
+!--And I open Payments page
+!--And I click on arrow down with css selector .cx-arrow-down-icon
+!--And I wait small timeout
+!--And I click on View details button with css selector button.btn-secondary:nth-child(1)
+!--And I wait until service ready
+!--Then I see Transaction Details header with css selector .h1 contains: Transaction Details
+!--When I click on Request refund with css selector .btn-block
+!--And I request refund with reason Other and with text %{messageText}
+
+
+Scenario:
+Check zendesk last ticket
+Meta:
+@name Check zendesk last ticket
+!-- Given I logged in to Zendesk
+Given I check in zendesk sent message with text Buyer Mike In. requested refund for A.I. Prediction Subscription from Tickeron.
+Then I see status of ticker with css selector span.active:nth-child(2) > span:nth-child(1) contains: open
+When I click on transaction number with css selector div.api:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)
+When SwitchTo new window in browser
+And I wait until service ready
+And I wait big timeout
+And I click on email input field with css selector #admin__login-form__login-input
+And I type %{adminusername} into email input field with css selector #admin__login-form__login-input
+And I type %{adminpassword} into password input field with css selector #admin__login-form__password-input
+And I click on "Login" button with css selector #admin__login-form__login-button
+And I wait until service ready
+And I click on Reject refund with css selector button.btn:nth-child(2)
+Then I see header with css selector .text-uppercase contains: REJECT REFUND
+When I execute javascript CKEDITOR.instances.text.setData("Refund about -- %{messageText} -- rejected ");
+And I wait small timeout
+And I click on submit button with css selector button.btn:nth-child(5)
+Then I see toaster with css selector .toast-message is Refund request was rejected.
+When close all windows and open new one
+
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+
+Scenario: AI Predictions Subscription for refound
+GivenStories:
+Given I logged in with %{username} and %{password}
+When I open Notifications page
+Then I see notification with css selector tr.ng-scope:nth-child(1) > td:nth-child(3) > span:nth-child(2) contains: Refund Request Rejected
+When I click on More with css selector tr.ng-scope:nth-child(1) > td:nth-child(3) > a:nth-child(4)
+Then I see notification with css selector .cx-wall-table__content contains: Seller Tickeron denied you request for refund for
+
+
+
+Scenario:
+Check zendesk last ticket
+Meta:
+@name Check zendesk last ticket
+!-- Given I logged in to Zendesk
+Given I check that zendesk ticket with User Mike In. have status is(choose one of solved/open/pending): solved
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+!--Scenario:
+!--PAI Predictions Subscription from intermed
+!--GivenStories:
+!--    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Unsubscribe}
+!--Given Do nothing

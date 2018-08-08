@@ -1,0 +1,41 @@
+Story: Make sure that advisor can create an account for client.
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param email value from property mail.username
+And I generate UUID + @portfoliodirect.com and put it to test param generatedEmail
+
+Scenario:
+Make sure that advisor can create an account for client.
+Meta:
+@name Advisor create account for client
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+!-- Open Client menu
+When I wait until service ready
+And I click on Client menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Clients')]
+And I click on Your Clients with css selector .open > ul:nth-child(3) > li:nth-child(2) > a:nth-child(2)
+And I wait until service ready
+And I click on button "Invite" with css selector .btn-block
+And I click on button "Create and manage account for client" with css selector button.cx-adv-invite__button:nth-child(2)
+!-- Enter valid e-mail
+And I type %{email} into e-mail field with css selector #email
+!-- Enter valid data in First nsme field
+And I type Mike into First Nsme with css selector #firstName
+!-- Enter valid data in Last nsme field
+And I type Aniston into Last Name with css selector #lastName
+And I click on button "Create Account for User" with css selector button.pull-right
+And I wait small timeout
+Then I see green toaster with css selector .toast-message is User account was successfully created!
+When I wait big timeout
+
+!--Check email
+When I receive email message
+Then I see last email message subject is Tickeron notification. Advisor created an account for you
+And I see last email message from is Tickeron <admin@advisorycenter.com>
+And I see last email message body contains app/index#!/main/Beginner?action=login
+And I see last email message body contains Mike
+
+

@@ -1,0 +1,33 @@
+Story: Provide funds page
+
+Narrative:
+As a data admin
+I want to check "Provide funds" page
+
+Scenario:
+Setup params. Checks "Provider funds" page as data admin
+Meta:
+@basic
+Given Set test param username value from property param.accountadmin.username
+And Set test param password value from property param.accountadmin.password
+
+Scenario: Checks "Provider funds" page
+Meta:
+@name Checks "Provider funds" page
+GivenStories:
+    stories/login/admin_login.story#{name:Login to admin interface as account admin}
+Given Do nothing
+And I wait big timeout
+!-- Go to Provider funds page
+When I click on Data menu with link selector Data
+And I click on Score tables menu  with link selector Provider funds
+Then I see top of page with css selector .col-md-12 > h1:nth-child(1) is: Provider Company Funds
+And I wait big timeout
+!-- Upload file
+When I upload file List of tickers.xlsx using input element with css selector button[class*='btn btn-default']
+!-- Click on Re-init Plan button
+And I click on Re-init Plan button with css selector button.btn:nth-child(1)
+And I wait big timeout
+!-- Check result
+Then I see Number of Companies: with css selector div.ng-scope:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) is: 80
+And I see Number of Unique Funds: with css selector div.ng-scope:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) is: 80

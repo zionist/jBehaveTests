@@ -1,0 +1,46 @@
+Story: Community -> Your page -> Prediction page
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Check overview -> Your page -> Predictions page
+Meta:
+@Check overview -> Your page -> predictions page
+Given I logged in with %{username} and %{password}
+When I open COMMUNITY menu
+When I click on Tickers  with css selector #community__menu__tickers-link
+And I wait until service ready
+Then I see header with css selector .social-title > h1:nth-child(1) contains: List of tickers
+And I wait small timeout
+When I type VIP into search field with css selector .form-control
+And I wait small timeout
+And I click on ticker with xpath selector //a[@class='ng-binding'][contains(., 'VimpelCom Shs Sponsored American Deposit Receipt Repr 1 Sh')]
+!-- tr.ng-scope:nth-child(1)
+And I wait until service ready
+And I click on prediction menu with css selector .cx-content-menu__icon__predictions
+And I wait until service ready
+And I click on bulish button  with containsText selector BULLISH
+And I click on Select high confidence in menu with css selector .open > div:nth-child(2) > a:nth-child(5)
+And I wait small timeout
+And I click on confirm with css selector button.btn-primary:nth-child(2)
+And I wait until service ready
+!-- Then I see UP with css selector .preds-votebox__vote-text > small:nth-child(1) > b:nth-child(1) contains: Up
+When I click on your page with css selector #community__menu__your-page-link
+And I wait until service ready
+And I click on prediction page with css selector #community__predictions-link
+And I wait until service ready
+Then I see head with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Predictions
+Then I see VIP with css selector div.col-sm-6:nth-child(1) > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1) > a:nth-child(1) contains: VIP
+Then I see BULLISH with css selector div.col-sm-6:nth-child(1) > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(2) contains: BULLISH
+Then I see HIGH with css selector div.col-sm-6:nth-child(1) > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(3) contains: HIGH
+
+
+
+
+
+
+
+

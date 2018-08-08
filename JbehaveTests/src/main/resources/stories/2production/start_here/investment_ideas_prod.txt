@@ -1,0 +1,41 @@
+Story: I need Investment Ideas (untill title only)
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+And Set test param password value from property param.beginner.password
+And I generate Personal + UUID and put it to test param portfolioGenerated
+
+Scenario:
+Create a new investment portfolio as Beginner
+Meta:
+@name Investment Ideas
+GivenStories:
+    stories/login/login.story#{name:Login with email and password},
+
+When I click on header with css selector .cx-start-here-header_md
+Then I see header with css selector .cx-start-here-header_md contains: Start Here!
+
+When I click on Investment ideas button with css selector .btn-primary-wiz-sm
+And I wait small timeout
+And I click on Next button with css selector .btn-primary-wiz-sm
+And I click on No with css selector div.col-xs-6:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+And I click on 0-25 with css selector .cx-start-here-task__wizard_block > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)
+And I click on Agressive with css selector .cx-start-here-task__wizard_block > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)
+And I click on 0-5 with css selector div.row:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)
+And I click on Yes with css selector div.row:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)
+And I click on Yes with css selector div.row:nth-child(5) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)
+Given Do nothing
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate Personal + UUID and put it to test param portfolioGenerated
+
+Scenario:
+Create a new investment portfolio as Advisor
+GivenStories:
+    stories/2production/start_here/investment_ideas_prod.story#{name:Investment Ideas}
+Given Do nothing

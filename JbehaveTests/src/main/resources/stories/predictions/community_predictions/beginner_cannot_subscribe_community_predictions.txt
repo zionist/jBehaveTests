@@ -1,0 +1,23 @@
+Story: Beginner can not subscribe
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario:
+Community Predictions Upgrade
+Meta:
+@name Community Predictions Upgrade
+Given I logged in with %{username} and %{password}
+When I open community trend predictions block
+And I wait until service ready
+!-- Click READ MORE
+When I click on READ with css selector .btn-more
+Then I see Pupup window header with css selector div.in:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h1:nth-child(1) is Introduction to Community Predictions
+When I click on close icon with css selector button.close:nth-child(2)
+And I wait until service ready
+!-- Click on Upgrade
+When I click on upgrade button with css selector a.btn
+And I wait until service ready
+Then I see page title with css selector .cx-membership__title is: Membership

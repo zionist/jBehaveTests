@@ -1,0 +1,103 @@
+Story: Make sure that advisor, who has T&C with bids can not delete it
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: Make client visible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+Given Set test param clientName with value Quan Public
+
+Scenario: Login as Advisor and click on Connect
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value James Adv.
+
+Scenario: As client confirm connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection },
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value Quan Public
+
+Scenario: As Advisor send a bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As Advisor send a bid},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value James Adv.
+
+Scenario:
+As client end subscription
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client end subscription},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario: Advisor, who has T&C with bids can not delete it
+GivenStories:
+    stories/login/login.story#{name:Login with email and password},
+!-- Open Advisor/Client menu
+When I open CLIENTS menu
+And I click on Terms And Conditions menu with css selector a.cx-second-level-menu-item:nth-child(5)
+And I wait until service ready
+Then I see Terms And Conditions on head of page with css selector .col-xs-10 > h1:nth-child(1) is Terms And Conditions
+When I click on delete button with css selector button.btn-link
+And I wait small timeout
+Then I see prompt with css selector div[is-open*='isOpen'] contains: You can't remove T&C with bids or subscriptions
+Given Do nothing
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario:
+As client unsubscription disconnect
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client unsubscription disconnect}
+Given Do nothing
+
+Scenario:
+Make myself invisible
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+!-- Scenario:
+!-- advisor can remove T&C
+!-- GivenStories:
+!--     stories/advisor-client/1_select_current_TAC.story#{name:advisor can remove T&C},
+Given Do nothing

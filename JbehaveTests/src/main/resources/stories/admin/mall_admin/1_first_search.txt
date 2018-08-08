@@ -1,0 +1,200 @@
+Story: Mall admin search
+
+Narrative:
+As a account admin user
+I want to perform search items in Mall
+
+Scenario:
+Setup params. Set user to account admin
+Meta:
+@basic
+Given Set test param username value from property param.accountadmin.username
+And Set test param password value from property param.accountadmin.password
+And I generate name_ + UUID and put it to test param testName
+
+Scenario: Create user as account admin
+Meta:
+@name Create user as account admin
+GivenStories:
+    stories/login/admin_login.story#{name:Login to admin interface as account admin}
+Given Do nothing
+
+Scenario: Search Newsletter by filters in MALL
+Meta:
+@name Search Newsletter by filters in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Search Newsletter with empty fields
+When I click on Newsletter item with css selector #itemType > option:nth-child(1)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: E-Newsletter #2
+!-- Search Newsletter by title
+When I type E-Newsletter #2 into chart titile with css selector #title
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: E-Newsletter #2
+When I clear the title with css selector #title
+!-- Search Newsletter by Seller Name
+When I type Expert AT into chart Seller name with css selector #sellerName
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter item with css selector div.col-xs-2:nth-child(4) > p:nth-child(1) is: Expert AT
+When I clear the Seller name with css selector #sellerName
+!-- Search Newsletter by Id
+When I type 3 into chart Id with css selector #mallItemId
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter item with css selector div.row:nth-child(7) > div:nth-child(1) > p:nth-child(1) is: 3
+When I clear the Id with css selector #mallItemId
+
+Scenario: Search Newsletter Issue by filters in MALL
+Meta:
+@name Search Newsletter Issue by filters in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Search Newsletter Issue with empty fields
+When I click on Newsletter Issue item with css selector #itemType > option:nth-child(2)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter Issue item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: issue
+!-- Search Newsletter Issue by title
+When I type issue 2 into chart titile with css selector #title
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter Issue item with css selector div.col-xs-6:nth-child(2) > p:nth-child(1) is: issue 2
+When I clear the title with css selector #title
+!-- Search Newsletter Issue by Seller Name
+When I type advisor2_L Public name into chart Seller name with css selector #sellerName
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter Issue item with css selector div.row:nth-child(7) > div:nth-child(3) > p:nth-child(1) is: advisor2_L Public name
+When I clear the Seller name with css selector #sellerName
+!-- Search Newsletter Issue by Id
+When I type -1999999992 into chart Id with css selector #mallItemId
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Newsletter Issue item with css selector div.row:nth-child(7) > div:nth-child(1) > p:nth-child(1) is: -1999999992
+When I clear the Id with css selector #mallItemId
+
+Scenario: Search Opinion by filters in MALL
+Meta:
+@name Search Opinion by filters in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Search Opinion with empty fields
+When I click on Opinion item with css selector #itemType > option:nth-child(3)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Opinion item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: A-Opinion #1
+!-- Search Opinion by title
+When I type A-Opinion #1 into chart titile with css selector #title
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Opinion item with css selector div.ng-scope:nth-child(2) > p:nth-child(1) is: A-Opinion #1
+When I clear the title with css selector #title
+!-- Search Opinion by Seller Name
+When I type Advisor AT into chart Seller name with css selector #sellerName
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Opinion item with css selector div.col-xs-2:nth-child(4) > p:nth-child(1) is: Advisor AT
+When I clear the Seller name with css selector #sellerName
+!-- Search Opinion by Id
+When I type 2 into chart Id with css selector #mallItemId
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Opinion item with css selector div.row:nth-child(7) > div:nth-child(1) > p:nth-child(1) is: 2
+When I clear the Id with css selector #mallItemId
+
+Scenario: Search Chart by filters in MALL
+Meta:
+@name Search Chart by filters in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Search Chart with empty fields
+When I click on Chart item with css selector #itemType > option:nth-child(4)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Chart item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: Chart #1 with PDF
+!-- Search Chart by title
+When I type Chart #1 with PDF into chart titile with css selector #title
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Chart item with css selector div.ng-scope:nth-child(2) > p:nth-child(1) is: Chart #1 with PDF
+When I clear the title with css selector #title
+!-- Search Chart by Seller Name
+When I type advisor2_L Public name into chart Seller name with css selector #sellerName
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Chart item with css selector div.row:nth-child(7) > div:nth-child(4) > p:nth-child(1) is: advisor2_L Public name
+When I clear the Seller name with css selector #sellerName
+!-- Search Chart by Id
+When I type -1999999996 into chart Id with css selector #mallItemId
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Chart item with css selector div.row:nth-child(7) > div:nth-child(1) > p:nth-child(1) is: -1999999996
+When I clear the Id with css selector #mallItemId
+
+Scenario: Search Portfolio model by filters in MALL
+Meta:
+@name Search Portfolio model by filters in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Search Portfolio model with empty fields
+When I click on Portfolio model item with css selector #itemType > option:nth-child(5)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio model item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: A-P2
+!-- Search Portfolio model by title
+When I type A-P2 into chart titile with css selector #title
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio model item with css selector div.ng-scope:nth-child(2) > p:nth-child(1) is: A-P2
+When I clear the title with css selector #title
+!-- Search Portfolio model by Seller Name
+When I type Advisor AT into chart Seller name with css selector #sellerName
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio model item with css selector div.col-xs-2:nth-child(4) > p:nth-child(1) is: Advisor AT
+When I clear the Seller name with css selector #sellerName
+!-- Search Portfolio model by Id
+When I type 3 into chart Id with css selector #mallItemId
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio model item with css selector div.row:nth-child(7) > div:nth-child(1) > p:nth-child(1) is: 3
+When I clear the Id with css selector #mallItemId
+
+Scenario: Search Portfolio subscription by filters in MALL
+Meta:
+@name Search Portfolio subscription by filters in MALL
+!-- Go to Mall
+When I click on MALL menu tab with link selector Mall
+Then I see page header with css selector .col-md-12 > h1:nth-child(1) is: Manage mall items
+!-- Search Portfolio subscription with empty fields
+When I click on Portfolio subscription item with css selector #itemType > option:nth-child(6)
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio subscription item with css selector div.row:nth-child(7) > div:nth-child(2) > p:nth-child(1) is: E-P2
+!-- Search Portfolio subscription model by title
+When I type E-P2 into chart titile with css selector #title
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio subscription item with css selector div.ng-scope:nth-child(2) > p:nth-child(1) is: E-P2
+When I clear the title with css selector #title
+!-- Search Portfolio subscription by Seller Name
+When I type Expert AT into chart Seller name with css selector #sellerName
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio subscription item with css selector div.col-xs-2:nth-child(4) > p:nth-child(1) is: Expert AT
+When I clear the Seller name with css selector #sellerName
+!-- Search Portfolio subscription by Id
+When I type 2 into chart Id with css selector #mallItemId
+And I click on Search button with css selector .btn-primary
+And I wait small timeout
+Then I see Portfolio subscription item with css selector div.row:nth-child(7) > div:nth-child(1) > p:nth-child(1) is: 2
+When I clear the Id with css selector #mallItemId

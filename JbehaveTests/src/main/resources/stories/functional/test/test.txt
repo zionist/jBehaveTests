@@ -1,0 +1,121 @@
+Story: functional example portfolio creation
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+And I generate Personal + UUID and put it to test param portfolioTitleGenerated
+
+Scenario: scenario description
+Given I authenticated using JSON with username %{username} and password %{password}
+And request body: {}
+When I perform POST request to api/CxLookUp/GetIndicators
+Then response has status 200
+And response JSON body is:
+[]
+
+Scenario: create personal portfolio with no tickers and cash
+Given I authenticated using JSON with username %{username} and password %{password}
+And request body:
+{
+   "header":{
+      "Title":"%{portfolioTitleGenerated}",
+      "CashReserves":"L",
+      "RiskLevel":"3",
+      "WillAddMoney":"1",
+      "YearsTill":"0",
+      "IsStatic":false,
+      "MinPerPosition":"1.00",
+      "MinPerRebalance":"1.00",
+      "FundGroups":[
+
+      ],
+      "OwnerId":159,
+      "HasBrokerageAccount":0,
+      "IsOwner":true
+   },
+   "funds":{
+      "Amount":10000,
+      "Amounts":[
+         10000
+      ],
+      "IsPctMode":[
+         false
+      ],
+      "MarketValue":0,
+      "AsIf":"2016-01-19T17:02:54.950Z",
+      "YouAllocation":true,
+      "ComputerAllocation":false,
+      "CounterPartAllocation":false,
+      "CounterPartAllocName":"",
+      "Funds":[
+         {
+            "Allocations":[
+               10000
+            ],
+            "Price":1,
+            "Category":"Money Market",
+            "Group":"Cash",
+            "Id":-1,
+            "Name":"CASH",
+            "Ticker":"CASHRSV",
+            "Type":"Mutual"
+         }
+      ],
+      "MarketValues":[
+         0
+      ],
+      "cashFund":{
+         "Allocations":[
+            10000
+         ],
+         "Price":1,
+         "Category":"Money Market",
+         "Group":"Cash",
+         "Id":-1,
+         "Name":"CASH",
+         "Ticker":"CASHRSV",
+         "Type":"Mutual"
+      },
+      "PreviousState":null
+   }
+}
+When I perform POST request to api/CxPortfolio/CreatePortfolio
+Then response has status 200
+And I save result to variable portfolioId
+
+Scenario: get personal portfolio
+Given I authenticated using JSON with username %{username} and password %{password}
+And request body:
+{id: "%{portfolioId}", getPerformance: true}
+When I perform POST request to api/CxPortfolio/GetPortfolioForEditAndSummary
+Then response has status 200
+And response JSON body satisfies condition:
+  it["Header"]["Title"] == "%{portfolioTitleGenerated}" &&
+  it["Funds"]["Amount"] == 10000 &&
+  it["Header"]["IsStatic"] == false
+And response JSON body satisfies condition:
+check = [
+  "Id": %{portfolioId},
+  "OwnerId": 159,
+  "Category": 1,
+  "IsCurrentlyAdvised": false,
+  "IsEverAdvised": false,
+  "IsEverSold": false,
+  "IsPublished": false,
+  "BoughtSIId": null,
+  "ShowChatBtn": false,
+  "AdviceRequestedOnDate": null,
+  "LastAdviceOnDate": null,
+  "HasActiveAdvice": false,
+  "HasAdvice": false,
+  "AlertHasActivity": false,
+  "AlertAdvisorHasActivity": false,
+  "AlertAutopilotHasActivity": false,
+  "OfferedForShareUser": null,
+  "CounterPartName": "N/A",
+  "IsOwnerApprovedUser": true,
+]
+// check map in json result
+for (k in check) { if (it[k.key] != k.value) return false }
+return true

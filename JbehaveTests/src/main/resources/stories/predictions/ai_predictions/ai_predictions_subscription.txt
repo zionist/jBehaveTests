@@ -1,0 +1,78 @@
+Story: subscribe and unsubscribe on ai trend predictions for all levels
+
+Scenario:
+Setup params. Set user to Advisor
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+
+Scenario: AI Predictions Subscription
+Meta:
+@name AI Predictions Subscription
+Given I connect card as client for %{username} with %{password}
+And I logged in with %{username} and %{password}
+When I open AI trend predictions block
+And I wait until service ready
+Then I see main page header with css selector .col-xs-4 > h1:nth-child(1) contains: A.I. Trend Predictions
+!-- Click READ MORE
+When I click on READ with css selector .btn-more
+Then I see Pupup window header with css selector div.in:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > h1:nth-child(1) is Introduction to Predictions
+When I click on close icon with css selector button.close:nth-child(2)
+And I wait until service ready
+!-- Click on subscribe
+When I click on subscribe button with css selector button.btn:nth-child(6)
+Then I see toaster with css selector .toast-message contains: Successfully subscribed.
+And I wait big timeout
+Then I see page title with css selector h1.col-xs-8 is: Subscriptions
+
+Scenario:
+AI Predictions Unsubscribe
+Meta:
+@name AI Predictions Unsubscribe
+Given I logged in with %{username} and %{password}
+When I open Personal Profile menu
+And I execute javascript $("a[href*='#!/editProfile/subscriptions']").click()
+And I wait until service ready
+Then I see header with css selector .h1 contains: Subscriptions
+When I execute javascript $("button[ng-click*=\"unsubscribe('prediction')\"").click()
+And I wait small timeout
+!-- When I execute javascript $("button:contains('Unsubscribe')").click()
+When I click on Unsubscribe with containsText selector Unsubscribe
+Then I see toaster with css selector .toast-message contains: Unsubscribed!
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+AI Predictions Subscription from expert
+GivenStories:
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Subscription},
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Unsubscribe}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+Scenario:
+PAI Predictions Subscription from intermed
+GivenStories:
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Subscription},
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Unsubscribe}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario:
+AI Predictions Subscription from beginner
+GivenStories:
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Subscription},
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Unsubscribe}
+Given Do nothing
+
+

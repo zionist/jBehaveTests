@@ -1,0 +1,71 @@
+Story: Trading Backtest Performance
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+And I generate Personal + UUID and put it to test param portfolioGenerated
+And I generate Some text for private note + UUID and put it to test param someText
+
+Scenario: Trading Backtest Performance
+GivenStories:
+   stories/functional/test/portfolio/create_non_diversified_trading_portfolio.story#{name:Create non diversified trading porfolio}
+Given I logged in with %{username} and %{password}
+When Portfolio. I find portfolio %{portfolioGenerated}
+When I click on Adjust Actual Positions with css selector .social-menu__icon_adjust
+And I wait small timeout
+And I click on remove GOOGL with css selector tr.ng-scope:nth-child(3) > td:nth-child(6) > i:nth-child(1)
+And I click on Yes with css selector button.ng-scope:nth-child(1)
+And I wait until service ready
+And I click on remove AAPL with css selector .dsg
+And I click on Yes with css selector button.ng-scope:nth-child(1)
+!-- press Done
+And I execute javascript $("button.btn-primary-sm:nth-child(1)").click()
+And I wait until service ready
+When I click on Analyze with css selector .social-menu__item_active > a:nth-child(1)
+And I click on Backtest Performance with css selector .social-menu__icon_backtest-trade-rules
+Then I see header with css selector h1.col-xs-10 contains: Analyze Backtest Trade Rules
+!-- When I type Oct 15, 2010 into from with css selector #fromDate
+When I execute javascript $("#fromDate").val("Oct 21, 2010")
+And I execute javascript $("#fromDate").change()
+And I clear the SPY ticker with css selector #filterInput
+And I type AAPL into ticker-picker with css selector #filterInput
+And I click on AAPL with css selector #chb33807
+And I wait small timeout
+When I type Weekly into weekly with css selector div.cx-portfolios-comparison-search-area__row:nth-child(3) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > select:nth-child(1)
+And I click on Monthly with css selector div.cx-portfolios-comparison-search-area__row:nth-child(3) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > select:nth-child(1)
+And I click on weekly with css selector div.cx-portfolios-comparison-search-area__row:nth-child(3) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > select:nth-child(1) > option:nth-child(2)
+And I wait small timeout
+And I click on Monthly with css selector div.row:nth-child(4) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > select:nth-child(1)
+And I click on weekly with css selector div.row:nth-child(4) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(1) > select:nth-child(1) > option:nth-child(2)
+And I click on Run button with css selector input.btn
+And I wait until service ready
+And I wait big timeout
+Then I see 1st tab with css selector .active contains: Allocation by group
+Then I see 2nd tab with css selector .tabs-left > li:nth-child(2) contains: Allocation by category
+Then I see 3rd tub with css selector .tabs-left > li:nth-child(3) contains: Gain/Loss per Position
+And I wait small timeout
+When I execute javascript scroll(1050, 700)
+When I click on 2nd tab with css selector .tabs-left > li:nth-child(2)
+And I wait small timeout
+Then I see Monew Market with css selector .amcharts-legend-item-Money > text:nth-child(3) > tspan:nth-child(1) contains: Money Market
+When I click on 3rd tab with css selector .tabs-left > li:nth-child(3)
+And I wait small timeout
+!-- Then I see $description with css selector .amcharts-legend-item-Money > rect:nth-child(4) contains: Money Market
+When I click on 1st tab with css selector .tabs-left > li:nth-child(1)
+And I wait small timeout
+And I move to element graph with css selector #backtestStackedChartId > div:nth-child(1) > div:nth-child(1) > svg:nth-child(1) > g:nth-child(8) > g:nth-child(1) > g:nth-child(2) > path:nth-child(2)
+And I click on graph with css selector #backtestStackedChartId > div:nth-child(1) > div:nth-child(1) > svg:nth-child(1) > g:nth-child(8) > g:nth-child(1) > g:nth-child(2) > path:nth-child(2)
+And I wait until service ready
+Then I see pie-graph with css selector #backtestPieChartId > div:nth-child(1) > div:nth-child(1) > svg:nth-child(1) > g:nth-child(14) > text:nth-child(2) > tspan:nth-child(1) contains: Allocation by group
+!-- check table mode
+When I click on table with css selector label.cx-radio:nth-child(2) > span:nth-child(2)
+And I wait small timeout
+Then I see Results with css selector .cx-backtest-result-area > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > h2:nth-child(1) contains: Results
+When I click on 1st date with css selector tr.ng-scope:nth-child(1) > td:nth-child(1)
+And I wait small timeout
+Then I see Cash Reserve with css selector .cx-misc-tooltip-activator > span:nth-child(1) > b:nth-child(1) contains: Cash Reserve
+Then I see 100.00% with css selector span.number-col:nth-child(3) contains: 100.00%
+When I click on Done button with css selector .btn-join
+And I wait until service ready
+Then I see Summary header with css selector .col-sm-9 > h1:nth-child(1) contains: Summary

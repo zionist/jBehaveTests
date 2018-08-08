@@ -1,0 +1,27 @@
+Story: Community -> Tickers -> Iexpert
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Check overview -> Tickers -> Iexpert
+Meta:
+@Name Check overview -> Tickers -> Iexpert
+Given I logged in with %{username} and %{password}
+When I open COMMUNITY menu
+When I click on Tickers  with css selector #community__menu__tickers-link
+And I wait until service ready
+Then I see Tickers page header with css selector .social-title > h1:nth-child(1) is: List of tickers
+And I wait small timeout
+When I type AAPL into searching field with css selector #community__tickers__search-input
+And I wait small timeout
+When I click on AAPL with css selector .tickers-list > table:nth-child(6) > tbody:nth-child(2) > tr:nth-child(1)
+And I wait until service ready
+When I click on Iexpert in left menu with css selector #community__tickers__menu__in-iexpert-link
+And I wait until service ready
+Then I see empty page with css selector .iexpert-search-results__nothing-found is: We couldn't find any results. Please enter a different search query.
+
+
+

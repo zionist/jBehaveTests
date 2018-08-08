@@ -1,0 +1,17 @@
+Story: Community -> Members -> Your title
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Members -> ...
+Meta:
+@Name Members -> ...
+Given I logged in with %{username} and %{password}
+When I click on Community menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Community')]
+When I click on Members  with link selector Members
+And I wait until service ready
+
+

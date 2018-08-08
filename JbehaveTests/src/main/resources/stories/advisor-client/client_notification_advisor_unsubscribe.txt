@@ -1,0 +1,123 @@
+Story: Make sure that client receives a what is up notification that advisor has unsubscribed from him
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value James Adv.
+
+Scenario: Make client visible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+And I generate Some text + UUID and put it to test param textGenerated
+Given Set test param clientName with value Quan Public
+
+Scenario: Login as Advisor, Create T&C, click on Connect
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario: As client confirm connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+
+Scenario: As Advisor send a bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As Advisor send a bid},
+Given Do nothing
+
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario: As client end subscription
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client end subscription},
+Given Do nothing
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+
+Scenario:
+Unsubscribe from client
+Meta:
+@name Unsubscribe from client
+Given I logged in with %{username} and %{password}
+!-- Open Advisor/Client menu
+When I wait until service ready
+And I open CLIENTS menu
+And I wait until service ready
+And I click on Client with containsText selector %{clientName}
+And I wait until service ready
+And I wait small timeout
+And I execute javascript $("button:contains('Unsubscribe')").click()
+And I wait small timeout
+And I click on Yes button with containsText selector Yes
+And I wait small timeout
+Then I see Connected with css selector .cx-adv-bid-state__text contains: Connected
+
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario:
+Check notification as client
+Meta:
+@name Check notification as client
+Given I logged in with %{username} and %{password}
+!-- Go to What's up
+When I click on Event more with containsText selector More
+And I wait until service ready
+Then I see Events header with css selector .col-sm-6 > h1:nth-child(1) contains: Events
+Then I see last event subject with css selector tr.ng-scope:nth-child(1) > td:nth-child(3) > span:nth-child(2) contains: Subscription canceled
+
+
+Scenario: As client disconnect
+Meta:
+@name As client disconnect
+Given I logged in with %{username} and %{password}
+When I open ADVISORS menu
+And I wait until service ready
+And I click on tab connection with css selector .tabs-left > li:nth-child(2)
+And I wait until service ready
+And I click on Avisor name with containsText selector %{advisorName}
+And I wait until service ready
+And I click on disconnect button with xpath selector //button[contains(., 'Disconnect')]
+And I wait until service ready
+And I wait small timeout
+Then I see Connect button with css selector a.btn contains: Connect
+
+Scenario: Make client invisible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing

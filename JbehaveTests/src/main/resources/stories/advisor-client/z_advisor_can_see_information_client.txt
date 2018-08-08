@@ -1,0 +1,119 @@
+Story: Make sure that advisor can see correct information about client and client’s portfolios.
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+And I generate Personal + UUID and put it to test param portfolioGenerated
+
+Scenario:
+Make client visible for advisors
+Meta:
+@name Make expert visible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+!-- Go to community -> Tickers
+When I click on Community menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'PORTFOLIOS')]
+And I click on Create New Portfolio menu with link selector Create New Portfolio
+And I wait until service ready
+Then I see Create portfolio page header with css selector .col-sm-8 > h1:nth-child(1) is: Create Portfolio
+!-- Enter valid data
+And I wait big timeout
+When I type %{portfolioGenerated} into Portfolio title with css selector #input_title
+And I wait small timeout
+!-- Enter valid data in Years till Withdrawal field
+And I  type 5 - 15 into Years till Withdrawal input with css selector #select_years
+!-- Enter valid data in Risk Levels  field
+And I wait small timeout
+And I type Moderate into  Risk Levels  field with css selector #select_risk
+!-- Enter valid data in US State field
+And I wait small timeout
+And I type FL, Florida into US State field with css selector #select_state
+!-- Enter valid data in Cash Reserves  field
+And I wait small timeout
+When I type More than 12 month into Cash Reserves field with css selector #select_cash
+!-- Enter valid data in Type field
+And I wait small timeout
+When I type Non-retirement into Type field with css selector #select_type
+!-- Mark checkbox "Will add Money"
+And I wait small timeout
+And I click on "Will add Money" with css selector .fa-square-o
+!-- Click on button "Next"
+And I wait small timeout
+When I click on Next with css selector input.btn-primary:nth-child(1)
+And I click on Finish button with css selector input.ng-scope
+Then I see Created portfolio page heder with css selector .col-sm-9 > h1:nth-child(1) is:  Portfolio Summary
+!-- Mark checkbox "Visible for Advisor"
+When I click on checkbox "Visible for Advisor" with css selector div.col-xs-4:nth-child(2) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > i:nth-child(1)
+And I wait big timeout
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+
+Scenario: Login as Advisor and click on Connect
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario: As client confirm connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+
+Scenario:
+As Advisor check client's info
+Meta:
+@name Advisor check client's info
+Given I logged in with %{username} and %{password}
+!-- Open Advisor/Client menu
+When I wait until service ready
+And I click on Client menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'CLIENTS')]
+And I click on Add Potential Clients with css selector .open > ul:nth-child(3) > li:nth-child(1) > a:nth-child(2)
+And I wait until service ready
+And I click on tab connections with css selector li.ng-isolate-scope:nth-child(2) > a:nth-child(1) > tab-heading:nth-child(1)
+And I wait until service ready
+And I click on button Select with css selector div.tab-pane:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(7) > button:nth-child(1)
+And I wait until service ready
+Then I see client's e-mail with css selector table.cx-table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) is e1@catch01.tickerontest.com
+When I click on button "Cencel Request" with css selector button.ng-binding
+And I wait big timeout
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+As expert delete portfolio
+Meta:
+@name Expert delete portfolio
+Given I logged in with %{username} and %{password}
+When I click on Community menu with xpath selector //a[@class='cx-page-header__first-level__link'][contains(., 'PORTFOLIOS')]
+And I click on Your Portfolio menu with css selector .open > ul:nth-child(3) > li:nth-child(2) > a:nth-child(2)
+And I wait until service ready
+And I click on title portfolio with link selector %{portfolioGenerated}
+And I wait until service ready
+And I click on Remove portfolio with css selector .fa-trash
+And I wait small timeout
+And I click on button "Yes" with css selector button.ng-binding:nth-child(1)
+And I wait big timeout
+
+
+Scenario: Make myself invisible
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible}
+Given Do nothing

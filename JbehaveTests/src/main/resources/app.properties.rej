@@ -1,0 +1,10 @@
+diff a/JbehaveTests/src/main/resources/app.properties b/JbehaveTests/src/main/resources/app.properties	(rejected hunks)
+@@ -4,7 +4,7 @@
+ screenshot.path=screenshots
+ 
+ # web server URL
+-server.host=web.5.teamcity.tickerontest.com
++server.host=web.6.teamcity.tickerontest.com
+ server.protocol=http
+ server.port=80
+ !-- server.url=http://192.168.56.101/

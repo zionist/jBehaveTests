@@ -1,0 +1,72 @@
+Story: Check timemachine
+
+Scenario:
+Setup params. Set user to AccountAdmin
+Meta:
+@basic
+@login
+Given Set test param username value from property param.accountadmin.username
+And Set test param password value from property param.accountadmin.password
+
+
+Scenario:
+Create prefill database
+Meta:
+@name Create prefill database
+GivenStories:
+    stories/login/admin_login.story#{name:Login to admin interface as account admin}
+Given I set all permissions for account admin if they are not set
+!-- Open time machine menu
+When I click on "System" button with css selector li.ng-scope:nth-child(3) > a:nth-child(1)
+And I click on "Time machine button" with link selector Time machine
+And I clear the "Set day as" input with css selector #createDb-inputDate1
+And I type 1/21/14 into "Set day as" input with css selector #createDb-inputDate1
+And I wait small timeout
+And I click on "Create prefill" button with css selector button.btn:nth-child(2)
+And I wait small timeout
+And I click on "Create prefill" button with css selector button.btn:nth-child(2)
+!-- Wait until time machine will work
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+!-- Check
+Then I see time machine output text with css selector yy.col-xs-12 contains: Restarting application ...
+
+Scenario:
+Check prefild database created. Forward to next day
+Meta:
+@name Check prefild database created
+GivenStories:
+    stories/login/admin_login.story#{name:Login to admin interface as account admin}
+Given I set all permissions for account admin if they are not set
+!-- Open time machine menu
+When I click on "System" button with css selector li.ng-scope:nth-child(3) > a:nth-child(1)
+And I click on "Time machine button" with link selector Time machine
+!-- Check date was changed
+Then I see date with xpath selector //*[@id="wrapper"]/div/div/ui-view/div[1]/p/span[1] is 01/22/2014
+!-- Select forward to next day
+When I click on element with css selector select.form-control
+And I click on element with css selector select.form-control > option:nth-child(2)
+!-- When I type Forward To Next Day into actions select with css selector select.form-control
+And I wait small timeout
+And I click on Submit with css selector .btn
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+And I wait big timeout
+Then I see time machine output text with css selector yy.col-xs-12 contains: Done
+
+
+

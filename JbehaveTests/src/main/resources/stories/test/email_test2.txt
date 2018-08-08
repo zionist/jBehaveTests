@@ -1,0 +1,22 @@
+Story: email test story 2
+
+Scenario:
+Setup params. Set user to advisor
+Meta:
+@basic
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+And I generate name_ + UUID and put it to test param testName
+
+
+Scenario:
+Test Scenario2
+Meta:
+@name Test scenario2
+GivenStories:
+    stories/test/email_test3.story#{name:Test scenario3}
+When I receive email message
+Then I see last email message subject is Verify email to continue registration1
+And I see last email message from is Tickeron <admin@advisorycenter.com>
+And I see last email message body contains app/userpublic#!/completeRegistration/
+And I see last email message body contains New Use

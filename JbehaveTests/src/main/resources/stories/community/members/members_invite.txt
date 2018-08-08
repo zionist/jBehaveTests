@@ -1,0 +1,50 @@
+Story: Community -> Members -> Invite to Club and Webcast
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param dateOfWebcast with value 05/08/2019
+
+
+
+Scenario:
+Invite to Club and Webcast
+Meta:
+@Name Invite to Club and Webcast
+GivenStories:
+stories/community/webcasts/cred_webcasts.story#{name:Create webcast}
+Given Do nothing
+!--find member "John Exp."
+When I click on menu item "Members" with css selector #community__menu__members-link
+And I type John Exp. into search field with css selector #community__members__search-input
+And I wait small timeout
+And I click on member name with css selector .member-card__header
+!-- Invite to club
+And I click on button "Invite" with css selector .social-title > div:nth-child(1) > div:nth-child(4) > div:nth-child(2) > button:nth-child(1)
+And I click on Invite to club with css selector .open > ul:nth-child(2) > li:nth-child(1) > a:nth-child(1)
+And I wait small timeout
+And I type Club for advisors into club with css selector #club
+And I type invitation Text into message with css selector #invitationText
+And I click on button "Send Ivitation" with css selector .col-sm-4 > button:nth-child(1)
+!-- Invite to webcast
+And I click on button "Invite" with css selector .social-title > div:nth-child(1) > div:nth-child(4) > div:nth-child(2) > button:nth-child(1)
+And I click on Invite to webcast with css selector .social-title > div:nth-child(1) > div:nth-child(4) > div:nth-child(2) > ul:nth-child(2) > li:nth-child(2) > a:nth-child(1)
+And I wait small timeout
+And I type Promo webcast into webcast with css selector #webcast
+And I type invitation Text into message with css selector #invitationText
+And I click on button "Send Ivitation" with css selector .col-sm-4 > button:nth-child(1)
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+
+Scenario:
+Delete items: webcast
+Meta:
+@Name Delete items: webcast
+GivenStories:
+stories/community/webcasts/cred_webcasts.story#{name:Delete webcast}
+Given Do nothing

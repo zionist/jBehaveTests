@@ -1,0 +1,70 @@
+Story: Functional report a problem
+
+Scenario:
+Setup params. Set user to Advisor
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+And I generate blog_ + UUID and put it to test param blogGeneratedName
+And I generate alias_ + UUID and put it to test param blogGeneratedAlias
+And I generate some_text + UUID and put it to test param generatedText
+
+Scenario: Login as Advisor
+GivenStories:
+    stories/functional/test/login/login.story#{name:Login},
+Given Do nothing
+
+Scenario: Create blog
+GivenStories:
+    stories/functional/test/iexpert/crud_blog.story#{name:Create blog},
+Given Do nothing
+
+Scenario: Report a problem
+Given request body:
+{"complaint":{"Url":"/app/social#!/members/me/blog/%{blogPostId}","ComplaintType":"General","Text":"<p>%{generatedText}</p>\n"}}
+When I perform POST request to api/CxForumAdmin/FileComplaint
+Then response has status 200
+
+Scenario:
+Delete blog
+GivenStories:
+    stories/functional/test/iexpert/crud_blog.story#{name:Delete Blog},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to Content Admin
+Given Set test param username value from property param.contentadmin.username
+And Set test param password value from property param.contentadmin.password
+
+Scenario: Login as Content Admin
+Given request body:
+{
+  "login": "%{username}",
+  "password": "%{password}",
+  "rememberMe": true
+}
+When I perform POST request to api/CxUser/Login
+Then response has status 200
+
+Scenario: Get Problem
+Given request body: {"searchText":null,"offset":0,"pageSize":10000,"sortField":"Id","sortAsc":true}
+When I perform POST request to api/CxForumAdmin/ListComplaints
+Then response has status 200
+
+And I save JSON field value using groovy query it["Items"].last()["CreatedOn"] into variable CreatedOn
+And I save JSON field value using groovy query it["Items"].last()["ComplaintId"] into variable ComplaintId
+And response JSON body satisfies condition:
+it["Items"].last() ==
+[
+      "ComplaintId": %{ComplaintId},
+      "CreatedOn": "%{CreatedOn}",
+      "Text": "<p>%{generatedText}</p>\n",
+      "Author": "James Adv.",
+      "TypeOfContent": null,
+      "Alias": "/app/social#!/members/me/blog/%{blogPostId}",
+      "Url": "/app/social#!/members/me/blog/%{blogPostId}",
+      "EditorComments": "",
+      "Status": "UNREAD",
+      "Type": "GENERAL"
+]
+
+

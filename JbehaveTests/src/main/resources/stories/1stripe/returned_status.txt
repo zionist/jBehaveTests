@@ -1,0 +1,53 @@
+Story: Returned status as users into the initial state
+
+!--/*
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.atexpertat.username
+Given Set test param password value from property param.atexpertat.password
+Scenario: Make myself invisible
+Meta:
+@name Make myself invisible
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+!-- make myself invisible
+When I click on Advisor menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Advisors')]
+And I click on Find Advisor menu with css selector .open > ul:nth-child(3) > li:nth-child(1) > a:nth-child(2)
+And I wait until service ready
+And I click on tab let advisor find me with css selector li.ng-isolate-scope:nth-child(2) > a:nth-child(1)
+And I wait until service ready
+And I click on make myself invisible with css selector div.cx-let-find__action:nth-child(4) > button:nth-child(1)
+And I wait big timeout
+Then I see this text with css selector div.cx-let-find:nth-child(2) > div:nth-child(5) contains: Once you've pressed this button all registered advisors will be able to review
+And I wait big timeout
+Given Do nothing
+!--*/
+
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.contentadmin2.username
+Given Set test param password value from property param.contentadmin2.password
+
+
+Scenario:
+As client unsubscription disconnect
+Meta:
+@name Rename ca_e@copymytrade.com
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+!-- Open Advisor/Client menu
+When I click on Avatar with css selector div[model*='topMenuItems.UserAvatar']
+And I click on Personal Profile with css selector #cx_menu_profile_dropdown > li:nth-child(1) > a:nth-child(1)
+And I wait until service ready
+And I click on the link "Edit" with css selector .cx-right-nav-btn
+And I wait until service ready
+And I click on Edit button with css selector button.btn-link
+And I wait until service ready
+And I clear the Public Name field with css selector input[name*='publicName']
+And I type zzz into Public Name field with css selector input[name*='publicName']
+And I clear the lastName with css selector input[name*='lastName']
+And I type Pupkin into lastName with css selector input[name*='lastName']
+And I clear the companyName with css selector input[name*='companyName']
+And I type Pupkin into companyName with css selector input[name*='companyName']
+And I click on Save button with css selector div.col-sm-3:nth-child(2) > button:nth-child(1)

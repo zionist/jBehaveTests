@@ -1,0 +1,116 @@
+Story: Make sure that advisor receives a notification what’s up that client has unsubscribed from him
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: Make client visible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+And I generate Some text + UUID and put it to test param textGenerated
+
+Scenario: Login as Advisor, Create T&C, click on Connect
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: As client confirm connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario: As Advisor send a bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As Advisor send a bid},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: As client end subscription
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client end subscription},
+Given Do nothing
+
+Scenario:
+Unsubscribe from advisor
+Meta:
+@name Unsubscribe from advisor
+When I wait big timeout
+And I click on Unsubscribe button with css selector button.ng-binding
+And I wait small timeout
+And I click on Yes button with css selector div.in:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > button:nth-child(1)
+And I wait small timeout
+Then I see Connected with css selector .cx-adv-bid-state__text contains: Connected
+And I wait big timeout
+
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Check notification as advisor
+Meta:
+@name Check notification as advisor
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+!-- Go to What's up
+When I click on What's up with css selector li.second-level-menu-item:nth-child(3) > a:nth-child(1)
+And I wait until service ready
+Then I see Quan Public unsubscribed with css selector div.cx-wall-item:nth-child(2) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > div:nth-child(2) is Quan Public unsubscribed
+And I wait small timeout
+
+Scenario:
+Setup params. Set user to begginer
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: As client disconnect
+Meta:
+@name As client disconnect
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+!-- Open Advisor/Client menu
+When I click on Advisor menu with xpath selector //a[@class='main_menu_item_dropdown_name ng-binding'][contains(., 'Advisors')]
+And I click on Find Advisor menu with css selector .open > ul:nth-child(3) > li:nth-child(1) > a:nth-child(2)
+And I wait until service ready
+And I click on tab connection with css selector li.ng-isolate-scope:nth-child(3) > a:nth-child(1)
+And I wait until service ready
+And I click on first advisor in list with xpath selector //button[@class='btn btn-default'][contains(., 'Select')]
+And I wait until service ready
+And I click on Disconnect button with xpath selector //button[@class='btn ng-binding btn-default'][contains(., 'Disconnect')]
+And I wait small timeout
+Then I see status with css selector .cx-adv-bid-state__text is Not Connected
+And I wait small timeout
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: Make client invisible for advisors
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing

@@ -1,0 +1,113 @@
+Story: Make sure that advisor after sending Connection Request can cancel it
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+And I generate _Title + UUID and put it to test param titleGenerated
+And I generate Some text + UUID and put it to test param textGenerated
+
+Scenario: Make client visible for advisors 1
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value Quan Public
+
+Scenario:
+Send connect and cancel it
+Meta:
+@name Send connect and cancel it
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+When I wait small timeout
+And I execute javascript $("button.ng-binding").click()
+And I wait big timeout
+Then I see "Not Connected" on head of page with xpath selector //span[contains(., 'Not connected')] contains: Not connected
+
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: Make client invisible for advisors 1
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing
+
+
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+And I generate _Title + UUID and put it to test param titleGenerated
+And I generate Some text + UUID and put it to test param textGenerated
+
+Scenario: Make client visible for advisors 2
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value Mike In.
+
+Scenario:
+Send connect and cancel it
+GivenStories:
+    stories/advisor-client/advisor_can_cancel_connection_request.story#{name:Send connect and cancel it},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+Scenario: Make client invisible for advisors 2
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing
+
+
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+And I generate _Title + UUID and put it to test param titleGenerated
+And I generate Some text + UUID and put it to test param textGenerated
+
+Scenario: Make client visible for advisors 3
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value John Exp.
+
+Scenario:
+Send connect and cancel it
+GivenStories:
+    stories/advisor-client/advisor_can_cancel_connection_request.story#{name:Send connect and cancel it},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario: Make client invisible for advisors 3
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible},
+Given Do nothing

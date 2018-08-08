@@ -1,0 +1,95 @@
+Story: Check that pages have correct view and adds alerts
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario: AI Predictions overviews pages and adds alerts
+Meta:
+@name AI Predictions overviews pages and adds alerts
+GivenStories:
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Subscription}
+When I wait big timeout
+!-- On/Off alerts
+And I click on alerts switch with css selector div.pull-right
+Then I see toaster with css selector .toast-message contains: Alerts turned off
+When I wait big timeout
+And I click on alerts switch with css selector div.pull-right
+Then I see toaster with css selector .toast-message contains: Alerts turned on
+!-- inbox
+When I click on inbox with xpath selector //a[@href='#!/predictions/inbox']
+And I wait until service ready
+Then I see header with css selector h1.ng-binding contains: Inbox
+!-- bookmarked
+When I click on bookmarked with xpath selector //a[@href='#!/predictions/bookmarked']
+And I wait until service ready
+Then I see header with css selector h1.ng-binding contains: Bookmarked
+!-- alerts
+When I click on alert setup with xpath selector //a[@href='#!/predictions/alert-setup']
+And I wait until service ready
+Then I see header with css selector .cx-patterns-subscription-alerts-setup-page > h1:nth-child(1) contains: Trend Alert Setup
+!-- slider
+
+
+!-- add alerts
+When I execute javascript $("a[href*='#!/predictions/add-prediction/']").click()
+And I wait until service ready
+!-- select all types
+When I click on Bullish weekly with xpath selector //div[@ng-click='togglePrediction(0);']
+And I click on Bearish weekly with xpath selector //div[@ng-click='togglePrediction(1);']
+And I click on Bullish monthly with xpath selector //div[@ng-click='togglePrediction(2);']
+And I click on Bearish monthly with xpath selector //div[@ng-click='togglePrediction(3);']
+!-- And I click on Next
+And I click on Next with css selector button.btn-secondary:nth-child(1)
+And I wait small timeout
+And I click on Categories with css selector  .tabs-left > li:nth-child(2)
+And I wait small timeout
+When I click on Conservative Allocation with xpath selector //span[text()='Conservative Allocation']
+!-- Add ticker A
+When I click on tab tickers with css selector .tabs-left > li:nth-child(1)
+And I type A into field with css selector #filterInput
+And I will wait until ticker element element with css selector #chb34108 will be visible
+When I start recording action
+And I will move in action to ABC ticker element with css selector #chb34108
+And I will click in action on ABC ticker element with css selector #chb34108
+Then I perform previously recorded action
+When I click on Add button with css selector .btn-add-ticker
+And I wait small timeout
+Then I see A ticker in column with css selector strong.ng-binding is A
+!-- Remove ticker
+When I click on Remove icon  with css selector .btn-delete-icon
+And I wait small timeout
+And I will refresh the page
+!-- Add A again
+And I type A into field with css selector #filterInput
+And I will wait until ticker element element with css selector #chb34108 will be visible
+When I start recording action
+And I will move in action to A ticker element with css selector #chb34108
+And I will click in action on A ticker element with css selector #chb34108
+Then I perform previously recorded action
+When I click on Add button with css selector .btn-add-ticker
+And I wait small timeout
+Then I see A ticker in column with css selector strong.ng-binding is A
+!-- Finish
+When I click on Done  with css selector div.text-right > button:nth-child(1)
+And I wait until service ready
+Then I see header with css selector .cx-patterns-subscription-alerts-setup-page > h1:nth-child(1) contains: Trend Alert Setup
+!-- Remove alert
+When I click on Categories with css selector  .tabs-left > li:nth-child(2)
+And I execute javascript $("button[ng-click='clearAll();']").click()
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario: Predictions Unsubscribe
+Meta:
+@name Predictions Unsubscribe
+GivenStories:
+    stories/predictions/ai_predictions/ai_predictions_subscription.story#{name:AI Predictions Unsubscribe}
+Given Do nothing
+
+

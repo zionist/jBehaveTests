@@ -1,0 +1,17 @@
+Story: email test story 3
+
+Scenario:
+Setup params. Set user to advisor
+Meta:
+@basic
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+And I generate name_ + UUID and put it to test param testName
+
+
+Scenario:
+Test Scenario 3
+Meta:
+@name Test scenario3
+When I receive email message
+

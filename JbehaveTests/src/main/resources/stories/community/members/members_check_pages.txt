@@ -1,0 +1,92 @@
+Story: Community -> Members -> Check beginner (intermediate) pages on pre-login
+
+Scenario:
+Check beginner pages on pre-login
+Meta:
+@Name Check beginner pages on pre-login
+Given Browser ready
+And I wait small timeout
+When I click on TRY AS GUEST  with css selector .prelogin-marketing-menu__trigger_show
+And I wait small timeout
+Then I see pop up menu with css selector .prelogin-marketing-menu__slide-panel > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) contains: ARTIFICIAL INTELLIGENCE
+When I click on Members with link selector Members
+And I wait until service ready
+When I type Beginner AT into search field with css selector #community__members__search-input
+And I wait small timeout
+When I click on Beginner AT with css selector .member-card__header
+And I wait until service ready
+!-- Overview page
+Then I see header with css selector .social-title > div:nth-child(1) > div:nth-child(2) > a:nth-child(1) contains: Beginner AT
+Then I see header with css selector div.member-overview__block:nth-child(4) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) contains: Clubs
+Then I see header with css selector div.member-overview__block:nth-child(4) > div:nth-child(2) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) contains: Webcasts
+Then I see header with css selector div.row:nth-child(5) > div:nth-child(1) > div:nth-child(1) contains: Blog
+Then I see header with css selector div.row:nth-child(5) > div:nth-child(2) > div:nth-child(1) contains: Q&A
+!-- Clubs
+When I click on Clubs menu item with css selector #community__menu__investment-clubs-link
+And I wait until service ready
+Then I see header with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Clubs
+!-- Webcasts
+When I click on Webcasts menu item with css selector .cx-content-menu__icon__webcasts
+And I wait until service ready
+Then I see header with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Webcasts
+!-- Blog
+When I click on Blog menu item with css selector #community__menu__blogs-link
+And I wait until service ready
+Then I see header with css selector .social-title > h1:nth-child(1) contains: Blog
+!-- Q&A
+When I click on Q&A menu item with css selector #community__menu__qa-link
+And I wait until service ready
+Then I see header with css selector .social-title > h1:nth-child(2) contains: Questions asked
+
+
+Given Do nothing
+
+
+Scenario:
+Check intermediate pages on pre-login
+Meta:
+@Name Check intermediate pages on pre-login
+Given Browser ready
+And I wait small timeout
+When I click on TRY AS GUEST  with css selector .prelogin-marketing-menu__trigger_show
+And I wait small timeout
+Then I see pop up menu with css selector .prelogin-marketing-menu__slide-panel > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) contains: ARTIFICIAL INTELLIGENCE
+When I click on Members with link selector Members
+And I wait until service ready
+
+When I type Interm AT into search field with css selector #community__members__search-input
+And I wait small timeout
+When I click on Interm AT with css selector .member-card__header
+And I wait until service ready
+!-- Overview page
+Then I see header with css selector .social-title > div:nth-child(1) > div:nth-child(2) > a:nth-child(1) contains: Interm AT
+Then I see header with css selector div.member-overview__block:nth-child(4) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) contains: Clubs
+Then I see header with css selector div.member-overview__block:nth-child(4) > div:nth-child(2) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) contains: Webcasts
+Then I see header with css selector div.row:nth-child(5) > div:nth-child(1) > div:nth-child(1) contains: Blog
+Then I see header with css selector div.row:nth-child(5) > div:nth-child(2) > div:nth-child(1) contains: Q&A
+Then I see header with css selector div.row:nth-child(6) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) contains: Predictions
+!-- Predictions
+When I click on Predictions menu item with css selector #community__predictions-link
+And I wait until service ready
+Then I see header with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Predictions
+!-- Clubs
+When I click on Clubs menu item with css selector #community__menu__investment-clubs-link
+And I wait until service ready
+Then I see header with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Clubs
+!-- Webcasts
+When I click on Webcasts menu item with css selector .cx-content-menu__icon__webcasts
+And I wait until service ready
+Then I see header with css selector .cx-misc-tooltip-activator > span:nth-child(1) > span:nth-child(1) contains: Webcasts
+!-- Blog
+When I click on Blog menu item with css selector #community__menu__blogs-link
+And I wait until service ready
+Then I see header with css selector .social-title > h1:nth-child(1) contains: Blog
+!-- Q&A
+When I click on Q&A menu item with css selector #community__menu__qa-link
+And I wait until service ready
+Then I see header with css selector .social-title > h1:nth-child(2) contains: Questions asked
+
+
+Given Do nothing
+
+

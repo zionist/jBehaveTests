@@ -1,0 +1,200 @@
+Story: Make sure that client can reject bid that has been sent by advisor
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario: Make client visible for advisors 1
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+Given Set test param clientName with value Quan Public
+
+Scenario: Login as Advisor and click on Connect 1
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+Given Set test param advisorName with value James Adv.
+
+Scenario: As client confirm connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection },
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario: As Advisor send a bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As Advisor send a bid}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario:
+Reject bid as client
+Meta:
+@name last step of rejected bid as client
+Given I logged in with %{username} and %{password}
+When I open CLIENTS menu
+!-- And I click on Find Advisor menu with css selector .open > ul:nth-child(3) > li:nth-child(1) > a:nth-child(2)
+And I wait until service ready
+And I click on tab connection with css selector .tabs-left > li:nth-child(2)
+And I wait until service ready
+And I click on advisor with containsText selector %{advisorName}
+And I wait until service ready
+And I click on Review Bid with containsText selector Review Bid
+And I wait until service ready
+And I execute javascript $("button:contains('Reject Bid')").click()
+And I wait until service ready
+And I click on disconnect button with xpath selector //button[contains(., 'Disconnect')]
+And I wait until service ready
+And I wait small timeout
+Then I see Connect button with css selector a.btn contains: Connect
+
+Scenario:
+Make myself invisible
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible}
+Given Do nothing
+
+!-- Do the same as intermediate
+
+Scenario:
+Reject bid as client
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+Scenario: Make sure that client can reject bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+Given Set test param clientName with value Mike In.
+
+Scenario: Login as Advisor and click on Connect 2
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+Given Set test param advisorName with value James Adv.
+
+Scenario: As client confirm connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value Mike In.
+
+Scenario: As Advisor send a bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As Advisor send a bid}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+Given Set test param advisorName with value James Adv.
+
+Scenario:
+Reject bid as client
+GivenStories:
+    stories/advisor-client/y_client_can_reject_bid.story#{name:last step of rejected bid as client},
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible}
+Given Do nothing
+
+!-- Do the same as expert
+
+Scenario:
+Reject bid as client
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario: Make client visible for advisors  2
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Make client visible for advisors},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+And I generate _Title + UUID and put it to test param titleGenerated
+Given Set test param clientName with value  John Exp.
+
+Scenario: Login as Advisor and click on Connect 3
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:Login as Advisor and click on Connect},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+Given Set test param advisorName with value James Adv.
+
+Scenario: As client confirm connection
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As client confirm connection},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+Given Set test param clientName with value  John Exp.
+
+Scenario: As Advisor send a bid
+GivenStories:
+    stories/advisor-client/full_connection_client_advisor.story#{name:As Advisor send a bid}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+Given Set test param advisorName with value James Adv.
+
+Scenario:
+Reject bid as client
+GivenStories:
+ stories/advisor-client/y_client_can_reject_bid.story#{name:last step of rejected bid as client},
+ stories/advisor-client/full_connection_client_advisor.story#{name:Make myself invisible}
+Given Do nothing

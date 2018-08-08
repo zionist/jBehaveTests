@@ -1,0 +1,58 @@
+Story: I need Allocation Ideas (untill title only)
+
+Scenario:
+Setup params. Set user to Beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+
+Scenario:
+Allocation Ideas for Beginner
+Meta:
+@name Allocation Ideas
+
+GivenStories:
+    stories/login/login.story#{name:Login with email and password}
+
+When I click on "allocation Ideas" button with css selector div.cx-start-here-main__task-block:nth-child(5) > div:nth-child(3) > button:nth-child(2)
+When I click on Next with css selector .btn-primary-wiz-sm
+!-- Select your company 401(k)
+When I click on Select your company 401(k) with css selector div.cx-start-here-bnt-wizard__layout:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+When I click on company selection input with css selector #cxCompanyTickers_Input
+And I type A into company selection input with css selector #cxCompanyTickers_Input
+And I will wait until company element with css selector div.cx-company-tickers-list-item:nth-child(1) will be visible
+When I start recording action
+And I will move in action to A.T. Kearney, Inc. element with css selector div.cx-company-tickers-list-item:nth-child(1)
+And I will click in action on A.T. Kearney, Inc. element with css selector div.cx-company-tickers-list-item:nth-child(1)
+Then I perform previously recorded action
+When I click on unmark all with css selector input.cx-company-tickers-table-cb-select-all
+And I click on ticker 1 with css selector input.cx-company-tickers-table-cb
+And I click on ticker 2 with css selector tr.ng-scope.cx-table-row-even > td > input.cx-company-tickers-table-cb
+And I click on "Add selected" button with link selector Add Selected
+And I wait big timeout
+And I click on Next with css selector button.btn.btn-primary-wiz-sm
+!-- Percentages
+When I click on Percentages with css selector div.col-xs-4:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+!-- Allocations
+When I click on input field with css selector tr.ng-scope > td:nth-child(5) > span:nth-child(2) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)
+When I type 50 into input field with css selector .form-control
+When I click on "Apply" button with  css selector input.btn:nth-child(2)
+When I click on Next with css selector button.btn:nth-child(3)
+And I wait small timeout
+When I click on $25k-$100k with css selector .cx-start-here-task__wizard_block > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+When I click on Conservative with css selector .cx-start-here-task__wizard_block > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)
+When I click on 15+ years with css selector div.row:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)
+When I click on "NO" button with css selector div.row:nth-child(4) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)
+When I click on "NO" button with css selector div.row:nth-child(5) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)
+Given Do nothing
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Allocation Ideas for Advisor
+GivenStories:
+    stories/2production/start_here/allocation_ideas_prod.story#{name:Allocation Ideas}
+Given Do nothing

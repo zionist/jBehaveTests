@@ -1,0 +1,55 @@
+Story: Make sure that client after sending Connection Request can cancel it
+
+Scenario:
+Setup params. Set user to beginner
+Given Set test param username value from property param.beginner.username
+Given Set test param password value from property param.beginner.password
+
+Scenario:
+Client send connection request and cancel it
+Meta:
+@name Client send connection request and cancel it
+Given I logged in with %{username} and %{password}
+!-- Find Advisor
+When I open ADVISORS menu
+!-- And I click on Find Advisor menu with css selector .open > ul:nth-child(3) > li:nth-child(1) > a:nth-child(2)
+And I wait until service ready
+Then I see Find Advisor header with css selector .ac-title is Find Advisor
+When I type James Adv. into Search by name field with xpath selector //input[@placeholder='Search by name or company']
+And I wait small timeout
+And I click on Advisor name with containsText selector James Adv.
+And I wait until service ready
+Then I see Advisor name with css selector .member-info__name is James Adv.
+!-- Send connection request
+When I click on Connect button with css selector a.btn
+And I wait until service ready
+Then I see Request for Portfolio Review header with css selector .social-page-content > div:nth-child(2) > div:nth-child(2) > h1:nth-child(1) contains: Request for Portfolio review
+When I click on save and exit button with containsText selector Save & Exit
+And I wait until service ready
+Then I see Request Bid button with containsText selector Request Bid contains: Request Bid
+!-- Cancel request
+When I execute javascript $("button.btn-secondary:nth-child(1)").click()
+And I wait small timeout
+Then I see Connect button with css selector a.btn contains: Connect
+Given Do nothing
+
+Scenario:
+Setup params. Set user to intermediate
+Given Set test param username value from property param.intermediate.username
+Given Set test param password value from property param.intermediate.password
+
+Scenario: Client send connection request and cancel it as intermediate
+GivenStories:
+    stories/advisor-client/client_connect_request_cancel_it.story#{name:Client send connection request and cancel it}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario: Client send connection request and cancel it as expert
+GivenStories:
+    stories/advisor-client/client_connect_request_cancel_it.story#{name:Client send connection request and cancel it}
+Given Do nothing
+

@@ -1,0 +1,74 @@
+Story: Create blog and add comment this blog
+
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+And Set test param password value from property param.advisor.password
+And I generate Blog_ + UUID and put it to test param blogGeneratedTitle
+
+Scenario:
+Create blog
+Meta:
+@name Create blog
+GivenStories:
+    stories/iexpert/create_edit_delete_blog.story#{name:Create blog}
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.contentadmin.username
+Given Set test param password value from property param.contentadmin.password
+
+Scenario: As CONTENT ADMIN Approve blog
+GivenStories:
+    stories/iexpert/create_edit_delete_blog.story#{name:As CONTENT ADMIN Approve blog},
+Given Do nothing
+
+Scenario:
+Setup params. Set user to expert
+Given Set test param username value from property param.expert.username
+Given Set test param password value from property param.expert.password
+
+Scenario:
+Add comment in blog
+Meta:
+Add comment in blog
+Given I logged in with %{username} and %{password}
+!-- Find created blog
+When I open IEXPERT menu
+And I type %{blogGeneratedTitle} into search field with css selector .form-control
+And I wait small timeout
+When I click on blog link with containsText selector %{blogGeneratedTitle}
+And I wait until service ready
+And I type My comment for this blog into comment textarea with css selector #commentText
+When I wait small timeout
+And I click on button Post with css selector .btn-primary-sm
+Then I see green toaster with css selector .toast-message contains: Your comment was posted successfully!
+!-- Edit comment
+When I wait big timeout
+And I click on blog comment edit icon with css selector .btn-edit-icon
+And I clear the edit comment textarea with css selector #commentBody
+And I type I remove my old comment for this blog into edit comment textarea with css selector #commentBody
+And I click on Blog comment update button with css selector #commentForm > button:nth-child(2)
+Then I see toaster with css selector .toast-message contains: Your comment was updated successfully!
+When I wait big timeout
+!-- Remove comment
+When I click on blog comment delete icon with css selector .btn-delete-icon
+And I click on Yes button with css selector button.ng-binding:nth-child(1)
+And I wait until service ready
+Then I see Toaster item with css selector .toast-message contains: Comment deleted!
+!--/*
+Scenario:
+Setup params. Set user to advisor
+Given Set test param username value from property param.advisor.username
+Given Set test param password value from property param.advisor.password
+
+Scenario:
+Delete blog
+Meta:
+@name Delete blog
+GivenStories:
+    stories/iexpert/create_edit_delete_blog.story#{name:Delete blog}
+Given Do nothing
+
+!--*/

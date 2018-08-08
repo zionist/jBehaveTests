@@ -1,0 +1,18 @@
+Story: Check functionality of Explore as Guest page
+
+Scenario:
+Find Clients
+Meta:
+@name Find Clients
+Given Browser ready
+When I open EXPLORE AS GUEST menu
+And I wait small timeout
+Then I see header with xpath selector //span[text()='SHARE'] contains: SHARE
+!-- Open Find Clients
+When I click on Find Clients with xpath selector //a[@href='/app/guest#!/find_clients']
+And I wait small timeout
+Then I see header with css selector .explore-as-guest__intro-page-container__left-info-plate-title contains: Find new clients
+!-- Click on Find Clients for free button
+When I click on Find Clients for free with containsText selector Find clients
+And I wait small timeout
+Then I see sign up pop-up window and close it
